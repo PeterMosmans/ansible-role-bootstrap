@@ -1,0 +1,211 @@
+---
+# tasks file for bootstrap
+- name: Remove unwanted packages
+  apt:
+    name={{ item }}
+    force=yes
+    purge=yes
+    state=absent
+  with_items: "{{ bootstrap_packages_remove|default([]) }}"
+
+- name: Install common packages
+  apt:
+    name={{ item }}
+    update_cache=yes
+    cache_valid_time=86400
+    install-recommends=no
+    state=present
+  with_items: "{{ bootstrap_packages|default([]) }}"
+
+- name: Update packages
+  apt:
+    update_cache=yes
+    upgrade=dist
+    cache_valid_time=86400
+  tags:
+    - update
+
+- name: Allow ssh through firewall
+  ufw: rule=allow proto=tcp port=22
+  notify:
+    - reload ufw
+  tags:
+    - ssh
+
+- name: Make sure firewall is up and running, and denying
+  ufw: state=enabled policy=deny
+  notify:
+    - reload ufw
+  tags:
+    - ssh
+
+- name: Copy ssh banner
+  copy:
+    src=issue.ssh
+    dest=/etc/issue.ssh
+    owner=root
+    group=root
+    mode=0644
+  tags:
+    - ssh
+
+- name: Configure sshd settings
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp="^{{ item.name }}"
+    line="{{ item.name }} {{ item.value }}"
+    state=present
+  with_items: "{{ sshd_config|default([]) }}"
+  notify:
+    - restart sshd
+  tags:
+    - ssh
+
+- name: Remove certain sshd settings
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp=" {{ item }} "
+    state=absent
+  with_items: "{{ sshd_config_remove|default([]) }}"
+  notify:
+    - restart sshd
+  tags:
+    - ssh
+
+- name: Remove insufficient moduli settings
+  lineinfile:
+    dest=/etc/ssh/moduli
+    regexp=" {{ item }} "
+    line="{{ item }}"
+    state=absent
+  with_items: "{{ sshd_moduli_remove|default([]) }}"
+  notify:
+    - restart sshd
+  tags:
+    - ssh
+
+- name: Set hostname
+  hostname: name="{{ hostname|default("bootstrapped") }}"
+  when: ansible_distribution != 'Kali'
+  tags:
+    - hostname
+
+- name: Set hosts file
+  lineinfile: >
+    dest=/etc/hosts
+    state=present
+    regexp='^127.0.1.1'
+    line='127.0.1.1	{{ hostname|default("bootstrapped") }}'
+  tags:
+    - hostname
+
+- name: Check current timezone
+  shell: cat /etc/timezone
+  register: current_zone
+  changed_when: current_zone.stdout != "{{ timezone }}"
+  tags:
+    - timezone
+
+- name: Modify timezone variables
+  copy:
+    content={{ timezone }}
+    dest=/etc/timezone
+    owner=root
+    group=root
+    mode=0644
+  when: current_zone.stdout != "{{ timezone }}"
+  notify:
+    - update timezone
+  tags:
+    - timezone
+
+- name: Add standard groups
+  group:
+    name={{ item }}
+    state=present
+  with_items: "{{ bootstrap_groups|default([]) }}"
+  tags:
+    - usermanagement
+
+- name: Add users
+  user:
+    name={{ item.name }}
+    comment="{{ item.comment }}"
+    shell={{ item.shell }}
+    groups={{ ",".join(item.groups) }}
+    state=present
+  with_items: "{{ bootstrap_users|default([]) }}"
+  tags:
+    - usermanagement
+    
+- name: Add public SSH keys per user
+  authorized_key:
+    user={{ item.name }}
+    key="{{ item.ssh_key }}"
+  with_items: "{{ bootstrap_users|default([]) }}"
+  tags:
+    - usermanagement
+
+- name: install git repos per user
+  git:
+    repo={{ item[1].src }}
+    dest={{ item[1].dest }}
+    depth=1
+    accept_hostkey=yes
+    version={{ item[1].version }}
+  become_user: "{{ item[0].name }}"
+  become: no
+  with_subelements:
+    - "{{ bootstrap_users|default([]) }}"
+    - repos
+  tags:
+    - usermanagement
+
+- name: Set correct ownership for personal git repos
+  file: name={{ item[1].dest }}
+        owner={{ item[0].name }}
+        group={{ item[0].name }}
+        recurse=yes
+  with_subelements:
+    - "{{ bootstrap_users|default([]) }}"
+    - repos
+  tags:
+    - usermanagement
+
+- name: Execute installers for users
+  command: "{{ item[1].command }}"
+  sudo: yes
+  sudo_user: "{{ item[0].name }}"
+  with_subelements:
+    - "{{ bootstrap_users|default([]) }}"
+    - installers
+  tags:
+    - usermanagement
+
+- name: Allow passwordless sudo for sudo users
+  lineinfile:
+    "dest=/etc/sudoers
+    state=present
+    regexp='^{{ item }}'
+    insertafter=EOF
+    line='{{ item }} ALL=(ALL) NOPASSWD: ALL'"
+  with_items: "{{ bootstrap_sudo_users|default([]) }}"
+  tags:
+    - usermanagement
+
+- name: Disable grub timeout
+  lineinfile:
+    dest=/etc/default/grub
+    regexp="^{{ item.name }}="
+    line="{{ item.name }}={{ item.value }}"
+    state=present
+  with_items:  "{{ grub_settings|default([]) }}"
+  register: grub_config
+  tags:
+    - grub
+
+- name: Reload grub config
+  command: update-grub 2>/dev/null
+  when: grub_config | changed
+  tags:
+    - grub
