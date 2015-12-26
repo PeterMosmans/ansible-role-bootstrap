@@ -25,6 +25,7 @@ bootstrap_packages_remove:
   - task-laptop
   - wireless-regdb
   - wireless-tools
+  - wpasupplicant
 grub_settings:
   - name: "GRUB_TIMEOUT"
     value: "0"
