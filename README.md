@@ -92,6 +92,15 @@ bootstrap_packages_remove:
   - task-laptop
   - wireless-regdb
   - wireless-tools
+  - wpasupplicant
+```
+
+
+
+**bootstrap_pip_packages**: A list with pip packages that will be installed globally by default. Example:
+```
+bootstrap_pip_packages:
+  - ansible
 ```
 
 

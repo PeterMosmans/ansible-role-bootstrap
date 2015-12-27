@@ -17,6 +17,12 @@
     state=present
   with_items: "{{ bootstrap_packages|default([]) }}"
 
+- name: Install common pip packages
+  pip:
+    name={{ item }}
+    state=present
+  with_items: "{{ bootstrap_pip_packages|default([]) }}"
+
 - name: Update packages
   apt:
     update_cache=yes
