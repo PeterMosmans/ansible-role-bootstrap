@@ -28,6 +28,7 @@
     update_cache=yes
     upgrade=dist
     cache_valid_time=86400
+    install-recommends=no
   tags:
     - update
 
