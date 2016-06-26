@@ -4,7 +4,7 @@ Ansible Role: Bootstrap
 Build status for this role: [![Build Status](https://travis-ci.org/PeterMosmans/ansible-role-bootstrap.svg)](https://travis-ci.org/PeterMosmans/ansible-role-bootstrap)
 
 
-This role bootstraps a new server into existence. It installs and tightens a firewall, hardens SSH, modifies GRUB. The main focus is on **hardening a fresh server installation**.
+This role bootstraps a (new) server into existence. It installs and tightens a firewall, hardens SSH and modifies GRUB. The main focus is on **hardening a fresh server installation**.
 
 
 Requirements
@@ -110,6 +110,17 @@ Example:
 ```
 bootstrap_sudo_users:
   - vagrant
+```
+
+
+
+**bootstrap_ufw_tcp_allow**: A list of TCP ports that will be opened up in the firewall. It defaults to port 22 only.
+Example:
+```
+bootstrap_ufw_tcp_allow:
+  - 22
+  - 80
+  - 443
 ```
 
 

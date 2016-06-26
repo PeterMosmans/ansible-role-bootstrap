@@ -28,22 +28,24 @@
     update_cache=yes
     upgrade=dist
     cache_valid_time=86400
-    install-recommends=no
   tags:
     - update
 
 - name: Allow ssh through firewall
-  ufw: rule=allow proto=tcp port=22
+  ufw: rule=allow proto=tcp port={{ item }}
   notify:
     - reload ufw
   tags:
+    - firewall
     - ssh
+  with_items: "{{ bootstrap_ufw_tcp_allow|default([22]) }}"
 
 - name: Make sure firewall is up and running, and denying
   ufw: state=enabled policy=deny
   notify:
     - reload ufw
   tags:
+    - firewall
     - ssh
 
 - name: Copy ssh banner
