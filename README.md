@@ -69,12 +69,14 @@ bootstrap_packages:
   - curl
   - git
   - locate
+  - lsof
   - ntp
   - openssl
   - sudo
   - tmux
   - ufw
   - unzip
+  - zsh
 ```
 
 
