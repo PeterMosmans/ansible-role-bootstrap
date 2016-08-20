@@ -183,8 +183,8 @@
 
 - name: Execute installers for users
   command: "{{ item[1].command }}"
-  sudo: yes
-  sudo_user: "{{ item[0].name }}"
+  become: yes
+  become_user: "{{ item[0].name }}"
   with_subelements:
     - "{{ bootstrap_users|default([]) }}"
     - installers
