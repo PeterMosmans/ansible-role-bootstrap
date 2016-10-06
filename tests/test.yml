@@ -3,3 +3,5 @@
   remote_user: root
   roles:
     - ansible-role-bootstrap
+  vars:
+    - bootstrap_packages_remove: ""
