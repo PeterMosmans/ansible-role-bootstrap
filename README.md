@@ -37,9 +37,9 @@ boostrap_users:
      - git
      - sudo
    shell: "/bin/bash"
-   ssh_key: "{{ lookup('file', '/home/apenut/.ssh/authorized_keys') }}"
+   ssh_key: https://github.com/your-github-username.keys
    repos:
-     - src: my@git:/repo/dotfiles
+     - src: https://github.com/your-github-username/dotfiles
        dest: /home/apenut/.dotfiles
        version: master
    installers:
@@ -54,7 +54,7 @@ boostrap_users:
      - git
      - sudo
    shell: "/bin/bash"
-   ssh_key: "{{ lookup('file', '/home/apenut/.ssh/authorized_keys') }}"
+   ssh_key: https://github.com/your-github-username.keys
    repos: []
    installers: []
 ```
