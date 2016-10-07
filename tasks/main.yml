@@ -163,7 +163,7 @@
     accept_hostkey=yes
     version={{ item[1].version }}
   become_user: "{{ item[0].name }}"
-  become: no
+  become: yes
   with_subelements:
     - "{{ bootstrap_users|default([]) }}"
     - repos
