@@ -30,7 +30,7 @@ bootstrap_groups:
 **bootstrap_users**: A nested lists with users to add, with their SSH key, and optional git repos to install (for e.g. dotfiles), and installers to run (for e.g. setting up symlinks).
 Example:
 ```
-boostrap_users:
+bootstrap_users:
  - name: apenut
    comment: "Ape Nut"
    groups:
