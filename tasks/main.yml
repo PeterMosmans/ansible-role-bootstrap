@@ -155,7 +155,7 @@
   tags:
     - usermanagement
 
-- name: install git repos per user
+- name: Install git repos per user
   git:
     repo={{ item[1].src }}
     dest={{ item[1].dest }}
@@ -201,6 +201,25 @@
   with_items: "{{ bootstrap_sudo_users|default([]) }}"
   tags:
     - usermanagement
+
+- name: Create common directories
+  file:
+    path={{ item.path }}
+    mode={{ item.mode }}
+    owner={{ item.owner }}
+    group={{ item.group }}
+    state=directory
+  with_items: "{{ bootstrap_directories|default([]) }}"
+
+- name: Install common git repositories
+  git:
+    repo={{ item.repo }}
+    dest={{ item.dest }}
+    depth=1
+    accept_hostkey=yes
+    version={{ item.version|default("master") }}
+  with_items:
+    - "{{ bootstrap_git_repositories|default([]) }}"
 
 - name: Disable grub timeout
   lineinfile:

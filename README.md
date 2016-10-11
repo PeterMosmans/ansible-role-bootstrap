@@ -18,13 +18,33 @@ Role Variables
 Available variables are listed below, along with default values
 
 
-**bootstrap_groups**: A list with usergroups that will be added by default. The defaults can be found in `defaults/main.yml`.
+**bootstrap_directories**: A list with directories that will be created along with permissions, owner and groups.
+Example:
+```
+bootstrap_directories:
+ - path: /var/git
+   mode: 2660
+   owner: root
+   group: git
+```
+
+
+**bootstrap_git_repositories**: A list with common git repositories that will be cloned.
+Example:
+```
+bootstrap_git_repositories:
+ - repo: https://github.com/PeterMosmans/security-scripts
+   dest: /var/git/security-scripts
+   version: master
+```
+
+
+**bootstrap_groups**: A list with usergroups that will be added by default. The defaults can be found in `defaults/main.yml`:
 ```
 bootstrap_groups:
   - git
   - sudo
 ```
-
 
 
 **bootstrap_users**: A nested lists with users to add, with their SSH key, and optional git repos to install (for e.g. dotfiles), and installers to run (for e.g. setting up symlinks).
@@ -60,8 +80,7 @@ boostrap_users:
 ```
 
 
-
-**bootstrap_packages**: A list with packages that will be installed by default. The defaults can be found in `defaults/main.yml`.
+**bootstrap_packages**: A list with packages that will be installed by default. The defaults can be found in `defaults/main.yml`:
 ```
 bootstrap_packages:
   - aptitude
@@ -80,9 +99,7 @@ bootstrap_packages:
 ```
 
 
-
-**bootstrap_packages_remove**: A list with packages that will be removed by default. The defaults can be found in `defaults/main.yml`.
-
+**bootstrap_packages_remove**: A list with packages that will be removed by default. The defaults can be found in `defaults/main.yml`:
 ```
 bootstrap_packages_remove:
   - bluez
@@ -98,7 +115,6 @@ bootstrap_packages_remove:
 ```
 
 
-
 **bootstrap_pip_packages**: A list with pip packages that will be installed globally by default. Example:
 ```
 bootstrap_pip_packages:
@@ -106,18 +122,14 @@ bootstrap_pip_packages:
 ```
 
 
-
-**bootstrap_sudo_users**: A lists of users to grant passwordless access to sudo using the `/etc/sudoers` file.
-Example:
+**bootstrap_sudo_users**: A lists of users to grant passwordless access to sudo using the `/etc/sudoers` file. Example:
 ```
 bootstrap_sudo_users:
   - vagrant
 ```
 
 
-
-**bootstrap_ufw_tcp_allow**: A list of TCP ports that will be opened up in the firewall. It defaults to port 22 only.
-Example:
+**bootstrap_ufw_tcp_allow**: A list of TCP ports that will be opened up in the firewall. It defaults to port 22 only. Example:
 ```
 bootstrap_ufw_tcp_allow:
   - 22
@@ -127,7 +139,7 @@ bootstrap_ufw_tcp_allow:
 
 
 
-**grub_settings**: A list of name / value pairs that will be applied to the GRUB config file. The defaults can be found in `defaults/main.yml`.
+**grub_settings**: A list of name / value pairs that will be applied to the GRUB config file. The defaults can be found in `defaults/main.yml`:
 ```
 grub_settings:
   - name: "GRUB_TIMEOUT"
@@ -137,16 +149,13 @@ grub_settings:
 ```
 
 
-
-**hostname**: The hostname for the machine. If none is given, it will default to "bootstrapped".
-Example:
+**hostname**: The hostname for the machine. If none is given, it will default to "bootstrapped". Example:
 ```
 hostname: bootstrapped
 ```
 
 
-
-**sshd_config**: A list of name / value pairs that will be applied to the SSH daemon configuration file. The defaults can be found in `defaults/main.yml`.
+**sshd_config**: A list of name / value pairs that will be applied to the SSH daemon configuration file. The defaults can be found in `defaults/main.yml`:
 ```
 sshd_config:
   - name: Banner
@@ -176,8 +185,7 @@ sshd_config:
 ```
 
 
-
-**sshd_config_remove**: A list of lines (name / value pairs) that will be removed from the SSH daemon configuration file. The defaults can be found in `defaults/main.yml`.
+**sshd_config_remove**: A list of lines (name / value pairs) that will be removed from the SSH daemon configuration file. The defaults can be found in `defaults/main.yml`:
 ```
 sshd_config_remove:
   - "HostKey /etc/ssh/ssh_host_dsa_key"
@@ -185,8 +193,7 @@ sshd_config_remove:
 ```
 
 
-
-**sshd_moduli_remove**: A list of moduli values that will be removed from the /etc/ssh/moduli list. The defaults can be found in `defaults/main.yml`.
+**sshd_moduli_remove**: A list of moduli values that will be removed from the /etc/ssh/moduli list. The defaults can be found in `defaults/main.yml`:
 ```
 sshd_moduli_remove:
   - 1023
@@ -194,8 +201,7 @@ sshd_moduli_remove:
 ```
 
 
-
-**timezone**: The timezone for the machine. The default can be found in `defaults/main.yml`.
+**timezone**: The timezone for the machine. The default can be found in `defaults/main.yml`:
 ```
 timezone: Etc/UTC
 ```
