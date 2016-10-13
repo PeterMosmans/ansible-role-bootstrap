@@ -48,16 +48,6 @@
     - firewall
     - ssh
 
-- name: Copy ssh banner
-  copy:
-    src=issue.ssh
-    dest=/etc/issue.ssh
-    owner=root
-    group=root
-    mode=0644
-  tags:
-    - ssh
-
 - name: Configure sshd settings
   lineinfile:
     dest=/etc/ssh/sshd_config
@@ -220,6 +210,15 @@
     version={{ item.version|default("master") }}
   with_items:
     - "{{ bootstrap_git_repositories|default([]) }}"
+
+- name: Apply common templates
+  template:
+    src={{ item[1].src }}
+    dest={{ item[1].dest }}
+  with_items:
+    - "{{ bootstrap_templates|default([]) }}"
+  tags:
+    - templates
 
 - name: Disable grub timeout
   lineinfile:

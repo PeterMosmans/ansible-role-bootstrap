@@ -18,6 +18,8 @@ Role Variables
 Available variables are listed below, along with default values
 
 
+
+
 **bootstrap_directories**: A list with directories that will be created along with permissions, owner and groups.
 Example:
 ```
@@ -129,6 +131,14 @@ bootstrap_sudo_users:
 ```
 
 
+**bootstrap_templates**: A list with templates that will be applied and deployed.  The defaults can be found in `defaults/main.yml`:
+```
+bootstrap_templates:
+  - src: issue.ssh.j2
+    dest: /etc/issue.ssh
+```
+
+
 **bootstrap_ufw_tcp_allow**: A list of TCP ports that will be opened up in the firewall. It defaults to port 22 only. Example:
 ```
 bootstrap_ufw_tcp_allow:
@@ -137,6 +147,11 @@ bootstrap_ufw_tcp_allow:
   - 443
 ```
 
+
+**company**: The company name which will be used in the /etc/issue.ssh template. The default can be found in `defaults/main.yml`:
+```
+company: "Go Forward"
+```
 
 
 **grub_settings**: A list of name / value pairs that will be applied to the GRUB config file. The defaults can be found in `defaults/main.yml`:
@@ -206,7 +221,7 @@ sshd_moduli_remove:
 timezone: Etc/UTC
 ```
 
-Furthermore, the file `files/issue.ssh` will be copied to the host, and applied as SSH banner. Change the text to something that applies to you(r company).
+The template `templates/issue.ssh.j2` will be copied to the host, and applied as SSH banner using the **company** variable. Change the text to something that applies to you(r company).
 
 
 

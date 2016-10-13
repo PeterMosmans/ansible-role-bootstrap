@@ -28,6 +28,10 @@ bootstrap_packages_remove:
   - wireless-regdb
   - wireless-tools
   - wpasupplicant
+bootstrap_templates:
+  - src: issue.ssh.j2
+    dest: /etc/issue.ssh
+company: "Go Forward"
 grub_settings:
   - name: "GRUB_TIMEOUT"
     value: "0"
