@@ -131,15 +131,6 @@ bootstrap_sudo_users:
 ```
 
 
-**bootstrap_templates**: A list with templates that will be applied and deployed.  The defaults can be found in `defaults/main.yml`:
-```
-bootstrap_templates:
-  - src: issue.ssh.j2
-    dest: /etc/issue.ssh
-    mode: "0644"
-```
-
-
 **bootstrap_ufw_tcp_allow**: A list of TCP ports that will be opened up in the firewall. It defaults to port 22 only. Example:
 ```
 bootstrap_ufw_tcp_allow:
@@ -171,7 +162,40 @@ hostname: bootstrapped
 ```
 
 
-**sshd_config**: A list of name / value pairs that will be applied to the SSH daemon template file. The defaults can be found in `defaults/main.yml`:
+**sshd_moduli_remove**: A list of moduli values that will be removed from the /etc/ssh/moduli list. The defaults can be found in `defaults/main.yml`:
+```
+sshd_moduli_remove:
+  - 1023
+  - 1535
+```
+
+
+**timezone**: The timezone for the machine. The default can be found in `defaults/main.yml`:
+```
+timezone: Etc/UTC
+```
+
+## Templates
+
+**bootstrap_templates**: A list with templates that will be applied and deployed.  The defaults can be found in `defaults/main.yml`:
+```
+bootstrap_templates:
+  - src: issue.ssh.j2
+    dest: /etc/issue.ssh
+    mode: "0644"
+  - src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    mode: "0644"
+```
+
+The following templates will be applied and deployed by default:
+
+#### issue.ssh
+The template `templates/issue.ssh.j2` will be copied to the host, and applied as SSH banner using the **company** variable. Change the text to something that applies to you(r company).
+
+
+#### sshd_config
+The following (Jinja) variables will be applied to the SSH daemon template file in `templates/sshd_config.j2`. The defaults can be found in `defaults/main.yml`:
 ```
 sshd_banner: /etc/issue.ssh
 sshd_ciphers: "chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
@@ -188,23 +212,6 @@ sshd_usedns: "no"
 sshd_usepam: "yes"
 sshd_x11forwarding: "no"
 ```
-
-
-**sshd_moduli_remove**: A list of moduli values that will be removed from the /etc/ssh/moduli list. The defaults can be found in `defaults/main.yml`:
-```
-sshd_moduli_remove:
-  - 1023
-  - 1535
-```
-
-
-**timezone**: The timezone for the machine. The default can be found in `defaults/main.yml`:
-```
-timezone: Etc/UTC
-```
-
-The template `templates/issue.ssh.j2` will be copied to the host, and applied as SSH banner using the **company** variable. Change the text to something that applies to you(r company).
-
 
 
 Dependencies
