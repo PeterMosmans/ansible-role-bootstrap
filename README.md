@@ -136,6 +136,7 @@ bootstrap_sudo_users:
 bootstrap_templates:
   - src: issue.ssh.j2
     dest: /etc/issue.ssh
+    mode: "0644"
 ```
 
 

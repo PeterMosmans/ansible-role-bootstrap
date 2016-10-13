@@ -56,6 +56,7 @@
   template:
     src={{ item.src }}
     dest={{ item.dest }}
+    mode={{ item.mode }}
   with_items:
     - "{{ bootstrap_templates|default([]) }}"
   tags:

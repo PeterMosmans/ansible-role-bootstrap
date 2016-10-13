@@ -31,6 +31,7 @@ bootstrap_packages_remove:
 bootstrap_templates:
   - src: issue.ssh.j2
     dest: /etc/issue.ssh
+    mode: "0644"
 company: "Go Forward"
 grub_settings:
   - name: "GRUB_TIMEOUT"
