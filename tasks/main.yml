@@ -8,6 +8,14 @@
     state=absent
   with_items: "{{ bootstrap_packages_remove|default([]) }}"
 
+- name: Update packages
+  apt:
+    update_cache=yes
+    upgrade=dist
+    cache_valid_time=86400
+  tags:
+    - update
+
 - name: Install common packages
   apt:
     name={{ item }}
@@ -23,20 +31,41 @@
     state=present
   with_items: "{{ bootstrap_pip_packages|default([]) }}"
 
-- name: Update packages
-  apt:
-    update_cache=yes
-    upgrade=dist
-    cache_valid_time=86400
+- name: Create common files / directories
+  file:
+    path={{ item.path }}
+    mode={{ item.mode }}
+    owner={{ item.owner }}
+    group={{ item.group }}
+    state={{ item.directory|default("directory") }}
+  with_items: "{{ bootstrap_directories|default([]) }}"
+
+- name: Install common git repositories
+  git:
+    repo={{ item.repo }}
+    dest={{ item.dest }}
+    depth=1
+    accept_hostkey=yes
+    version={{ item.version|default("master") }}
+  with_items:
+    - "{{ bootstrap_git_repositories|default([]) }}"
+  # local modifications allowed
+  ignore_errors: yes
+
+- name: Apply / deploy common templates
+  template:
+    src={{ item.src }}
+    dest={{ item.dest }}
+  with_items:
+    - "{{ bootstrap_templates|default([]) }}"
   tags:
-    - update
+    - templates
 
 - name: Allow ssh through firewall
   ufw: rule=allow proto=tcp port={{ item }}
   notify:
     - reload ufw
   tags:
-    - firewall
     - ssh
   with_items: "{{ bootstrap_ufw_tcp_allow|default([22]) }}"
 
@@ -44,30 +73,6 @@
   ufw: state=enabled policy=deny
   notify:
     - reload ufw
-  tags:
-    - firewall
-    - ssh
-
-- name: Configure sshd settings
-  lineinfile:
-    dest=/etc/ssh/sshd_config
-    regexp="^{{ item.name }}"
-    line="{{ item.name }} {{ item.value }}"
-    state=present
-  with_items: "{{ sshd_config|default([]) }}"
-  notify:
-    - restart sshd
-  tags:
-    - ssh
-
-- name: Remove certain sshd settings
-  lineinfile:
-    dest=/etc/ssh/sshd_config
-    regexp=" {{ item }} "
-    state=absent
-  with_items: "{{ sshd_config_remove|default([]) }}"
-  notify:
-    - restart sshd
   tags:
     - ssh
 
@@ -136,7 +141,18 @@
   with_items: "{{ bootstrap_users|default([]) }}"
   tags:
     - usermanagement
-    
+
+- name: Allow passwordless sudo for sudo users
+  lineinfile:
+    "dest=/etc/sudoers
+    state=present
+    regexp='^{{ item }}'
+    insertafter=EOF
+    line='{{ item }} ALL=(ALL) NOPASSWD: ALL'"
+  with_items: "{{ bootstrap_sudo_users|default([]) }}"
+  tags:
+    - usermanagement
+
 - name: Add public SSH keys per user
   authorized_key:
     user={{ item.name }}
@@ -180,45 +196,6 @@
     - installers
   tags:
     - usermanagement
-
-- name: Allow passwordless sudo for sudo users
-  lineinfile:
-    "dest=/etc/sudoers
-    state=present
-    regexp='^{{ item }}'
-    insertafter=EOF
-    line='{{ item }} ALL=(ALL) NOPASSWD: ALL'"
-  with_items: "{{ bootstrap_sudo_users|default([]) }}"
-  tags:
-    - usermanagement
-
-- name: Create common files / directories
-  file:
-    path={{ item.path }}
-    mode={{ item.mode }}
-    owner={{ item.owner }}
-    group={{ item.group }}
-    state={{ item.directory|default("directory") }}
-  with_items: "{{ bootstrap_directories|default([]) }}"
-
-- name: Install common git repositories
-  git:
-    repo={{ item.repo }}
-    dest={{ item.dest }}
-    depth=1
-    accept_hostkey=yes
-    version={{ item.version|default("master") }}
-  with_items:
-    - "{{ bootstrap_git_repositories|default([]) }}"
-
-- name: Apply common templates
-  template:
-    src={{ item[1].src }}
-    dest={{ item[1].dest }}
-  with_items:
-    - "{{ bootstrap_templates|default([]) }}"
-  tags:
-    - templates
 
 - name: Disable grub timeout
   lineinfile:

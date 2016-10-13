@@ -170,41 +170,21 @@ hostname: bootstrapped
 ```
 
 
-**sshd_config**: A list of name / value pairs that will be applied to the SSH daemon configuration file. The defaults can be found in `defaults/main.yml`:
+**sshd_config**: A list of name / value pairs that will be applied to the SSH daemon template file. The defaults can be found in `defaults/main.yml`:
 ```
-sshd_config:
-  - name: Banner
-    value: /etc/issue.ssh
-  - name: PasswordAuthentication
-    value: "yes"
-  - name: PermitEmptyPasswords
-    value: "no"
-  - name: PermitRootLogin
-    value: "no"
-  - name: PubkeyAuthentication
-    value: "yes"
-  - name: RSAAuthentication
-    value: "yes"
-  - name: GSSAPIAuthentication
-    value: "no"
-  - name: UseDNS
-    value: "no"
-  - name: KexAlgorithms
-    value: "curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256"
-  - name: HostKeyAlgorithms
-    value: "HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-ed25519,ssh-rsa"
-  - name: Ciphers
-    value: "chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
-  - name: MACs
-    value: "MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128@openssh.com"
-```
-
-
-**sshd_config_remove**: A list of lines (name / value pairs) that will be removed from the SSH daemon configuration file. The defaults can be found in `defaults/main.yml`:
-```
-sshd_config_remove:
-  - "HostKey /etc/ssh/ssh_host_dsa_key"
-  - "HostKey /etc/ssh/ssh_host_ecdsa_key"
+sshd_banner: /etc/issue.ssh
+sshd_ciphers: "chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
+sshd_gssapiauthentication: "no"
+sshd_hostkeyalgorithms: "ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-ed25519,ssh-rsa"
+sshd_kexalgorithms: "curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256"
+sshd_macs: "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128@openssh.com"
+sshd_passwordauthentication: "no"
+sshd_permitemptypasswords: "no"
+sshd_permitrootlogin: "no"
+sshd_pubkeyauthentication: "yes"
+sshd_rsaauthentication: "yes"
+sshd_usedns: "no"
+sshd_usepam: "yes"
 ```
 
 

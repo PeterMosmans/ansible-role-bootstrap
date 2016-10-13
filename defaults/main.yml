@@ -37,37 +37,21 @@ grub_settings:
     value: "0"
   - name: "GRUB_RECORDFAIL_TIMEOUT"
     value: "0"
-sshd_config:
-  - name: Banner
-    value: /etc/issue.ssh
-  - name: PasswordAuthentication
-    value: "no"
-  - name: PermitEmptyPasswords
-    value: "no"
-  - name: PermitRootLogin
-    value: "no"
-  - name: PubkeyAuthentication
-    value: "yes"
-  - name: RSAAuthentication
-    value: "yes"
-  - name: GSSAPIAuthentication
-    value: "no"
-  - name: UseDNS
-    value: "no"
-  - name: KexAlgorithms
-    value: "curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256"
-  - name: Ciphers
-    value: "chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
-  - name: MACs
-    value: "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128@openssh.com"
-  - name: "HostKey /etc/ssh/ssh_host_rsa_key"
-    value: ""
-  - name: "HostKey /etc/ssh/ssh_host_ed25519_key"
-    value: ""
-sshd_config_remove:
-  - "HostKey /etc/ssh/ssh_host_dsa_key"
-  - "HostKey /etc/ssh/ssh_host_ecdsa_key"
+sshd_banner: /etc/issue.ssh
+sshd_ciphers: "chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
+sshd_gssapiauthentication: "no"
+sshd_hostkeyalgorithms: "ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-ed25519,ssh-rsa"
+sshd_kexalgorithms: "curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256"
+sshd_macs: "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128@openssh.com"
 sshd_moduli_remove:
   - 1023
   - 1535
+sshd_passwordauthentication: "no"
+sshd_permitemptypasswords: "no"
+sshd_permitrootlogin: "no"
+sshd_pubkeyauthentication: "yes"
+sshd_rsaauthentication: "yes"
+sshd_usedns: "no"
+sshd_usepam: "yes"
+
 timezone: Etc/UTC
