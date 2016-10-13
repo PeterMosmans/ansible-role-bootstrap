@@ -19,9 +19,14 @@ Available variables are listed below, along with default values
 
 
 
+**bootstrap_commands**: A list with commands that will be executed on the host as last step of the bootstrap role. Example:
+``` 
+bootstrap_commands:
+- "sudo /usr/bin/compact_box.sh"
+```
 
-**bootstrap_directories**: A list with directories that will be created along with permissions, owner and groups.
-Example:
+
+**bootstrap_directories**: A list with directories that will be created along with permissions, owner and groups. Example:
 ```
 bootstrap_directories:
  - path: /var/git
@@ -31,8 +36,7 @@ bootstrap_directories:
 ```
 
 
-**bootstrap_git_repositories**: A list with common git repositories that will be cloned.
-Example:
+**bootstrap_git_repositories**: A list with common git repositories that will be cloned. Example:
 ```
 bootstrap_git_repositories:
  - repo: https://github.com/PeterMosmans/security-scripts

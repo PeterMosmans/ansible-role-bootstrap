@@ -214,3 +214,7 @@
   when: grub_config | changed
   tags:
     - grub
+
+- name: Run post-provision commands
+  command: "{{ item }}"
+  with_items: "{{ bootstrap_commands|default([]) }}"
