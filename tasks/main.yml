@@ -202,13 +202,13 @@
   tags:
     - usermanagement
 
-- name: Create common directories
+- name: Create common files / directories
   file:
     path={{ item.path }}
     mode={{ item.mode }}
     owner={{ item.owner }}
     group={{ item.group }}
-    state=directory
+    state={{ item.directory|default("directory") }}
   with_items: "{{ bootstrap_directories|default([]) }}"
 
 - name: Install common git repositories
