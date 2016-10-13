@@ -140,12 +140,6 @@ bootstrap_ufw_tcp_allow:
 ```
 
 
-**company**: The company name which will be used in the /etc/issue.ssh template. The default can be found in `defaults/main.yml`:
-```
-company: "Go Forward"
-```
-
-
 **grub_settings**: A list of name / value pairs that will be applied to the GRUB config file. The defaults can be found in `defaults/main.yml`:
 ```
 grub_settings:
@@ -191,7 +185,10 @@ bootstrap_templates:
 The following templates will be applied and deployed by default:
 
 #### issue.ssh
-The template `templates/issue.ssh.j2` will be copied to the host, and applied as SSH banner using the **company** variable. Change the text to something that applies to you(r company).
+The template `templates/issue.ssh.j2` will be copied to the host, and applied as SSH banner using the **company** variable. Change the text to something that applies to you(r company). The default can be found in `defaults/main.yml`:
+```
+company: "Go Forward"
+```
 
 
 #### sshd_config
