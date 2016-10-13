@@ -26,13 +26,27 @@ bootstrap_commands:
 ```
 
 
-**bootstrap_directories**: A list with directories that will be created along with permissions, owner and groups. Example:
+**bootstrap_directories**: A list with directories and files that will be created along with permissions, owner and groups. Example:
 ```
 bootstrap_directories:
  - path: /var/git
-   mode: 2660
+   mode: "2660"
    owner: root
    group: git
+ - path: /tmp/empty
+   mode: "0777"
+   owner: root
+   group: root
+   state: touch
+```
+
+
+**bootstrap_files**: A list with files that will be copied to the target machine. Example:
+```
+bootstrap_files:
+- src: my-file.py
+  dest: /tmp/my-file.py
+   mode: "0755"
 ```
 
 

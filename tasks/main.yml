@@ -31,14 +31,16 @@
     state=present
   with_items: "{{ bootstrap_pip_packages|default([]) }}"
 
-- name: Create common files / directories
+- name: Create common (empty) files / directories
   file:
     path={{ item.path }}
     mode={{ item.mode }}
-    owner={{ item.owner }}
-    group={{ item.group }}
-    state={{ item.directory|default("directory") }}
+    owner={{ item.owner|default("root") }}
+    group={{ item.group|default("root") }}
+    state={{ item.state|default("directory") }}
   with_items: "{{ bootstrap_directories|default([]) }}"
+  tags:
+    - files
 
 - name: Install common git repositories
   git:
@@ -61,6 +63,17 @@
     - "{{ bootstrap_templates|default([]) }}"
   tags:
     - templates
+
+- name: Copy common files
+  template:
+    src={{ item.src }}
+    dest={{ item.dest }}
+    mode={{ item.mode }}
+    force={{ item.force|default("yes") }}
+  with_items:
+    - "{{ bootstrap_files|default([]) }}"
+  tags:
+    - files
 
 - name: Allow ssh through firewall
   ufw: rule=allow proto=tcp port={{ item }}
@@ -204,7 +217,7 @@
     regexp="^{{ item.name }}="
     line="{{ item.name }}={{ item.value }}"
     state=present
-  with_items:  "{{ grub_settings|default([]) }}"
+  with_items: "{{ grub_settings|default([]) }}"
   register: grub_config
   tags:
     - grub
@@ -218,3 +231,5 @@
 - name: Run post-provision commands
   command: "{{ item }}"
   with_items: "{{ bootstrap_commands|default([]) }}"
+  tags:
+    - commands
