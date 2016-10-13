@@ -185,6 +185,7 @@ sshd_pubkeyauthentication: "yes"
 sshd_rsaauthentication: "yes"
 sshd_usedns: "no"
 sshd_usepam: "yes"
+sshd_x11forwarding: "no"
 ```
 
 

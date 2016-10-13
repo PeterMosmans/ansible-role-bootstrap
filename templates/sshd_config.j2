@@ -58,7 +58,7 @@ PasswordAuthentication {{ sshd_passwordauthentication }}
 GSSAPIAuthentication {{ sshd_gssapiauthentication }}
 #GSSAPICleanupCredentials yes
 
-X11Forwarding yes
+X11Forwarding {{ sshd_x11forwarding }}
 X11DisplayOffset 10
 PrintMotd no
 PrintLastLog yes
