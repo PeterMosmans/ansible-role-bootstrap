@@ -94,8 +94,11 @@ galaxy_info:
   #  - lenny
   #  - squeeze
   #  - wheezy
-
-  categories:
-  - system
+  galaxy_tags:
+    - bootstrap
+    - hardening
+    - installation
+    - ssh
+    - system
 dependencies: []
   
