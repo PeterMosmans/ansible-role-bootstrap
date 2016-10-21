@@ -50,6 +50,19 @@
   tags:
     - usermanagement
 
+- name: Install common git repositories
+  git:
+    repo={{ item.repo }}
+    dest={{ item.dest }}
+    depth={{ item.depth|default("1") }}
+    accept_hostkey=yes
+    version={{ item.version|default("master") }}
+    force={{ item.force|default("no") }}
+  with_items:
+    - "{{ bootstrap_git_repositories|default([]) }}"
+  # local modifications allowed
+  ignore_errors: yes
+
 - name: Create common (empty) files / directories
   file:
     path={{ item.path }}
@@ -60,18 +73,6 @@
   with_items: "{{ bootstrap_directories|default([]) }}"
   tags:
     - files
-
-- name: Install common git repositories
-  git:
-    repo={{ item.repo }}
-    dest={{ item.dest }}
-    depth=1
-    accept_hostkey=yes
-    version={{ item.version|default("master") }}
-  with_items:
-    - "{{ bootstrap_git_repositories|default([]) }}"
-  # local modifications allowed
-  ignore_errors: yes
 
 - name: Apply / deploy common templates
   template:
@@ -84,7 +85,7 @@
     - templates
 
 - name: Copy common files
-  template:
+  copy:
     src={{ item.src }}
     dest={{ item.dest }}
     mode={{ item.mode }}
