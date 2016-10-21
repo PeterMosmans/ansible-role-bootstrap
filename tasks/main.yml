@@ -31,6 +31,25 @@
     state=present
   with_items: "{{ bootstrap_pip_packages|default([]) }}"
 
+- name: Add standard groups
+  group:
+    name={{ item }}
+    state=present
+  with_items: "{{ bootstrap_groups|default([]) }}"
+  tags:
+    - usermanagement
+
+- name: Add users
+  user:
+    name={{ item.name }}
+    comment="{{ item.comment }}"
+    shell={{ item.shell }}
+    groups={{ ",".join(item.groups) }}
+    state=present
+  with_items: "{{ bootstrap_users|default([]) }}"
+  tags:
+    - usermanagement
+
 - name: Create common (empty) files / directories
   file:
     path={{ item.path }}
@@ -136,25 +155,6 @@
     - update timezone
   tags:
     - timezone
-
-- name: Add standard groups
-  group:
-    name={{ item }}
-    state=present
-  with_items: "{{ bootstrap_groups|default([]) }}"
-  tags:
-    - usermanagement
-
-- name: Add users
-  user:
-    name={{ item.name }}
-    comment="{{ item.comment }}"
-    shell={{ item.shell }}
-    groups={{ ",".join(item.groups) }}
-    state=present
-  with_items: "{{ bootstrap_users|default([]) }}"
-  tags:
-    - usermanagement
 
 - name: Allow passwordless sudo for sudo users
   lineinfile:
