@@ -123,7 +123,6 @@
 
 - name: Set hostname
   hostname: name="{{ hostname|default("bootstrapped") }}"
-  when: ansible_distribution != 'Kali'
   tags:
     - hostname
 
