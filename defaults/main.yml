@@ -29,6 +29,9 @@ bootstrap_packages_remove:
   - wireless-tools
   - wpasupplicant
 bootstrap_templates:
+  - src: hosts.j2
+    dest: /etc/hosts
+    mode: "0644"
   - src: issue.ssh.j2
     dest: /etc/issue.ssh
     mode: "0644"

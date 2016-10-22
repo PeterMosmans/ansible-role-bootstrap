@@ -127,15 +127,6 @@
   tags:
     - hostname
 
-- name: Set hosts file
-  lineinfile: >
-    dest=/etc/hosts
-    state=present
-    regexp='^127.0.1.1'
-    line='127.0.1.1	{{ hostname|default("bootstrapped") }}'
-  tags:
-    - hostname
-
 - name: Check current timezone
   shell: cat /etc/timezone
   register: current_zone
