@@ -192,6 +192,9 @@ timezone: Etc/UTC
 **bootstrap_templates**: A list with templates that will be applied and deployed.  The defaults can be found in `defaults/main.yml`:
 ```
 bootstrap_templates:
+  - src: hosts.j2
+    dest: /etc/hosts
+    mode: "0644"
   - src: issue.ssh.j2
     dest: /etc/issue.ssh
     mode: "0644"
@@ -200,7 +203,17 @@ bootstrap_templates:
     mode: "0644"
 ```
 
+
 The following templates will be applied and deployed by default:
+
+#### hosts
+The template `templates/hosts.j2` will be copied to the host. The list of IP - name pairs in the variable `bootstrap_hostsfile` will be deployed. Example:
+```
+bootstrap_hostsfile:
+  - ip: 127.0.0.1
+    name: mywebsite
+```
+
 
 #### issue.ssh
 The template `templates/issue.ssh.j2` will be copied to the host, and applied as SSH banner using the **company** variable. Change the text to something that applies to you(r company). The default can be found in `defaults/main.yml`:
