@@ -5,6 +5,6 @@
 ::1     localhost ip6-localhost ip6-loopback
 ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
-{% for host in bootstrap_hostsfile %}
+{% for host in bootstrap_hostsfile|default([]) %}
 {{ host.ip }}  {{ host.name }}
 {% endfor %}
