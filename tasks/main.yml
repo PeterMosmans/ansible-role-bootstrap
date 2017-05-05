@@ -135,7 +135,7 @@
 - name: Check current timezone
   shell: cat /etc/timezone
   register: current_zone
-  changed_when: current_zone.stdout != "{{ timezone }}"
+  changed_when: current_zone.stdout != timezone
   tags:
     - timezone
 
@@ -146,7 +146,7 @@
     owner=root
     group=root
     mode=0644
-  when: current_zone.stdout != "{{ timezone }}"
+  when: current_zone.stdout != timezone
   notify:
     - update timezone
   tags:
