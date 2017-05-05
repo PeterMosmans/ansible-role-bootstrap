@@ -3,6 +3,8 @@
 bootstrap_groups:
   - git
   - sudo
+bootstrap_locale:
+  - en_US.UTF-8
 bootstrap_packages:
   - aptitude
   - ca-certificates
