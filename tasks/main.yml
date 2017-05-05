@@ -30,6 +30,12 @@
     state=present
   with_items: "{{ bootstrap_pip_packages|default([]) }}"
 
+- name: Set locale (needs locale package)
+  locale_gen:
+    name: "{{ bootstrap_locale|default('en_US.UTF-8') }}"
+    state: present
+  ignore_errors: yes
+
 - name: Add standard groups
   group:
     name={{ item }}

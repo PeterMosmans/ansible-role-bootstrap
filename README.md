@@ -20,7 +20,7 @@ Available variables are listed below, along with default values
 
 
 **bootstrap_commands**: A list with commands that will be executed on the host as last step of the bootstrap role. Example:
-``` 
+```
 bootstrap_commands:
 - "sudo /usr/bin/compact_box.sh"
 ```
@@ -65,6 +65,15 @@ bootstrap_groups:
   - git
   - sudo
 ```
+
+
+**bootstrap_locale**: The locale to use (e.g. en_US.UTF-8).
+If not set, it will default to en_US.UTF-8.
+Example:
+```
+bootstrap_locale: "en_US.UTF-8"
+```
+Note that this needs the locale package to properly function.
 
 
 **bootstrap_users**: A nested lists with users to add, with their SSH key, and optional git repos to install (for e.g. dotfiles), and installers to run (for e.g. setting up symlinks).
