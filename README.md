@@ -207,6 +207,9 @@ bootstrap_templates:
   - src: issue.ssh.j2
     dest: /etc/issue.ssh
     mode: "0644"
+  - src: locale.j2
+    dest: /etc/default/locale
+    mode: "0644"
   - src: sshd_config.j2
     dest: /etc/ssh/sshd_config
     mode: "0644"
@@ -229,6 +232,10 @@ The template `templates/issue.ssh.j2` will be copied to the host, and applied as
 ```
 company: "Go Forward"
 ```
+
+
+#### locale
+The template `templates/locale.j2` will be copied to the host, and contain the correct bootstrap_locale string(s).
 
 
 #### sshd_config
