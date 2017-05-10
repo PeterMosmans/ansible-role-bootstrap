@@ -66,7 +66,9 @@ TCPKeepAlive yes
 #UseLogin no
 
 #MaxStartups 10:30:60
+{% if sshd_banner is not none %}
 Banner {{ sshd_banner }}
+{% endif %}
 
 # Allow client to pass locale environment variables
 AcceptEnv LANG LC_*
