@@ -62,8 +62,14 @@ bootstrap_git_repositories:
 **bootstrap_groups**: A list with usergroups that will be added by default. The defaults can be found in `defaults/main.yml`:
 ```
 bootstrap_groups:
-  - git
   - sudo
+```
+
+
+**bootstrap_groups_remove**: A list with groups that will be removed by default. The defaults can be found in `defaults/main.yml`:
+```
+bootstrap_groups_remove:
+  - bluetooth
 ```
 
 
@@ -73,7 +79,7 @@ Example:
 ```
 bootstrap_locale: "en_US.UTF-8"
 ```
-Note that this needs the locale package to properly function.
+Note that this needs the locale package to properly function. If the package isn't available, the role will still continue.
 
 
 **bootstrap_users**: A nested lists with users to add, with their SSH key, and optional git repos to install (for e.g. dotfiles), and installers to run (for e.g. setting up symlinks).
@@ -112,35 +118,45 @@ boostrap_users:
 **bootstrap_packages**: A list with packages that will be installed by default. The defaults can be found in `defaults/main.yml`:
 ```
 bootstrap_packages:
-  - aptitude
-  - ca-certificates
-  - curl
-  - git
-  - locate
-  - lsof
-  - ntp
-  - openssl
   - sudo
-  - tmux
   - ufw
-  - unzip
-  - zsh
 ```
 
 
 **bootstrap_packages_remove**: A list with packages that will be removed by default. The defaults can be found in `defaults/main.yml`:
 ```
 bootstrap_packages_remove:
+# packages for bare metal
+  - acpid
   - bluez
   - crda
-  - cups
-  - iso-codes
+  - discover
+  - discover-data
+  - eject
   - iw
-  - libiw30
+  - laptop-detect
+  - powertop
   - task-laptop
   - wireless-regdb
   - wireless-tools
   - wpasupplicant
+# non-server / graphical packages
+  - console-setup
+  - cups
+  - dictionaries-common
+  - installation-report
+  - ispell
+  - iso-codes
+  - krb5-locales
+  - man-db
+  - manpages
+  - nano
+  - shared-mime-info
+  - task-english
+  - util-linux-locales
+  - wamerican
+  - xkb-data
+  - xz-utils
 ```
 
 

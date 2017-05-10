@@ -44,6 +44,14 @@
   tags:
     - usermanagement
 
+- name: Remove groups
+  group:
+    name={{ item }}
+    state=absent
+  with_items: "{{ bootstrap_groups_remove|default([]) }}"
+  tags:
+    - usermanagement
+
 - name: Add users
   user:
     name={{ item.name }}

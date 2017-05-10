@@ -1,37 +1,46 @@
 ---
 # defaults file for bootstrap
 bootstrap_groups:
-  - git
   - sudo
+bootstrap_groups_remove:
+  - bluetooth
 bootstrap_locale:
   - en_US.UTF-8
 bootstrap_packages:
-  - aptitude
-  - ca-certificates
-  - curl
-  - git
-  - locales
-  - locate
-  - lsof
-  - ntp
-  - openssl
   - sudo
-  - tmux
   - ufw
-  - unzip
-  - zsh
 bootstrap_packages_remove:
+# packages for bare metal
+  - acpid
   - bluez
   - crda
-  - cups
-  - iso-codes
+  - discover
+  - discover-data
+  - eject
   - iw
-  - krb5-locales
-  - libiw30
+  - laptop-detect
+  - powertop
   - task-laptop
   - wireless-regdb
   - wireless-tools
   - wpasupplicant
+# non-server / graphical packages
+  - console-setup
+  - cups
+  - dictionaries-common
+  - installation-report
+  - ispell
+  - iso-codes
+  - krb5-locales
+  - man-db
+  - manpages
+  - nano
+  - shared-mime-info
+  - task-english
+  - util-linux-locales
+  - wamerican
+  - xkb-data
+  - xz-utils
 bootstrap_templates:
   - src: hosts.j2
     dest: /etc/hosts
