@@ -5,6 +5,7 @@
     name={{ item }}
     force=yes
     purge=yes
+    autoremove=yes
     state=absent
   with_items: "{{ bootstrap_packages_remove|default([]) }}"
 
