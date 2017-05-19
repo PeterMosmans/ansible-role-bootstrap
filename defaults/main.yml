@@ -60,6 +60,7 @@ grub_settings:
     value: "0"
   - name: "GRUB_RECORDFAIL_TIMEOUT"
     value: "0"
+sshd_acceptenv: "LANG LC_*"
 sshd_banner: /etc/issue.ssh
 sshd_ciphers: "chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
 sshd_gssapiauthentication: "no"

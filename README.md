@@ -199,6 +199,7 @@ hostname: bootstrapped
 ```
 
 
+
 **sshd_moduli_remove**: A list of moduli values that will be removed from the /etc/ssh/moduli list. The defaults can be found in `defaults/main.yml`:
 ```
 sshd_moduli_remove:
@@ -257,6 +258,7 @@ The template `templates/locale.j2` will be copied to the host, and contain the c
 #### sshd_config
 The following (Jinja) variables will be applied to the SSH daemon template file in `templates/sshd_config.j2`. The defaults can be found in `defaults/main.yml`:
 ```
+sshd_acceptenv: LANG LC_*
 sshd_banner: /etc/issue.ssh
 sshd_ciphers: "chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
 sshd_gssapiauthentication: "no"

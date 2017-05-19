@@ -70,8 +70,8 @@ TCPKeepAlive yes
 Banner {{ sshd_banner }}
 {% endif %}
 
-# Allow client to pass locale environment variables
-AcceptEnv LANG LC_*
+# Allow client to pass certain environment variables
+AcceptEnv {{ sshd_acceptenv }}
 
 Subsystem sftp /usr/lib/openssh/sftp-server
 
