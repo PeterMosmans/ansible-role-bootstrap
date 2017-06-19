@@ -166,6 +166,7 @@ bootstrap_pip_packages:
   - ansible
 ```
 
+Note that **pip** (e.g. `python-pip`) needs to be installed for this, so don't forget to add that to the **bootstrap_packages** list.
 
 **bootstrap_sudo_users**: A lists of users to grant passwordless access to sudo using the `/etc/sudoers` file. Example:
 ```
