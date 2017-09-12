@@ -4,7 +4,9 @@ Ansible Role: Bootstrap
 Build status for this role: [![Build Status](https://travis-ci.org/PeterMosmans/ansible-role-bootstrap.svg)](https://travis-ci.org/PeterMosmans/ansible-role-bootstrap)
 
 
-This role bootstraps a (new) server into existence. It installs and tightens a firewall, hardens SSH and modifies GRUB. The main focus is on **hardening a fresh server installation**.
+This role bootstraps a (new) server into existence. It installs and tightens a
+firewall, hardens SSH and modifies GRUB. The main focus is on **hardening a
+fresh server installation**.
 
 
 Requirements
@@ -19,14 +21,16 @@ Available variables are listed below, along with default values
 
 
 
-**bootstrap_commands**: A list with commands that will be executed on the host as last step of the bootstrap role. Example:
+**bootstrap_commands**: A list with commands that will be executed on the host
+as last step of the bootstrap role. Example:
 ```
 bootstrap_commands:
 - "sudo /usr/bin/compact_box.sh"
 ```
 
 
-**bootstrap_directories**: A list with directories and files that will be created along with permissions, owner and groups. Example:
+**bootstrap_directories**: A list with directories and files that will be
+created along with permissions, owner and groups. Example:
 ```
 bootstrap_directories:
  - path: /var/git
@@ -41,7 +45,8 @@ bootstrap_directories:
 ```
 
 
-**bootstrap_files**: A list with files that will be copied to the target machine. Example:
+**bootstrap_files**: A list with files that will be copied to the target
+machine. Example:
 ```
 bootstrap_files:
 - src: my-file.py
@@ -50,7 +55,8 @@ bootstrap_files:
 ```
 
 
-**bootstrap_git_repositories**: A list with common git repositories that will be cloned. Example:
+**bootstrap_git_repositories**: A list with common git repositories that will be
+cloned. Example:
 ```
 bootstrap_git_repositories:
  - repo: https://github.com/PeterMosmans/security-scripts
@@ -59,31 +65,31 @@ bootstrap_git_repositories:
 ```
 
 
-**bootstrap_groups**: A list with usergroups that will be added by default. The defaults can be found in `defaults/main.yml`:
+**bootstrap_groups**: A list with user groups that will be added by default. The
+defaults can be found in `defaults/main.yml`:
 ```
 bootstrap_groups:
   - sudo
 ```
 
 
-**bootstrap_groups_remove**: A list with groups that will be removed by default. The defaults can be found in `defaults/main.yml`:
+**bootstrap_groups_remove**: A list with groups that will be removed by default.
+The defaults can be found in `defaults/main.yml`:
 ```
 bootstrap_groups_remove:
   - bluetooth
 ```
 
 
-**bootstrap_locale**: The locale to use (e.g. en_US.UTF-8).
-If not set, it will default to en_US.UTF-8.
-Example:
-```
-bootstrap_locale: "en_US.UTF-8"
-```
-Note that this needs the locale package to properly function. If the package isn't available, the role will still continue.
+**bootstrap_locale**: The locale to use (e.g. en_US.UTF-8). If not set, it will
+default to en_US.UTF-8. Example: ``` bootstrap_locale: "en_US.UTF-8" ``` Note
+that this needs the locale package to properly function. If the package isn't
+available, the role will still continue.
 
 
-**bootstrap_users**: A nested lists with users to add, with their SSH key, and optional git repos to install (for e.g. dotfiles), and installers to run (for e.g. setting up symlinks).
-Example:
+**bootstrap_users**: A nested lists with users to add, with their SSH key, and
+optional git repos to install (e.g. dotfiles), and installers to run (e.g.
+setting up symlinks). Example:
 ```
 bootstrap_users:
  - name: apenut
@@ -100,7 +106,8 @@ bootstrap_users:
    installers:
      - command: /home/apenut/.dotfiles/installer.sh
 ```
-If you don't want to add any repositories or installer scripts, You can also leave the `repos` and `installers` variables empty:
+If you don't want to add any repositories or installer scripts, You can also
+leave the `repos` and `installers` variables empty:
 ```
 boostrap_users:
  - name: apenut
@@ -115,7 +122,8 @@ boostrap_users:
 ```
 
 
-**bootstrap_packages**: A list with packages that will be installed by default. The defaults can be found in `defaults/main.yml`:
+**bootstrap_packages**: A list with packages that will be installed by default.
+The defaults can be found in `defaults/main.yml`:
 ```
 bootstrap_packages:
   - sudo
@@ -123,7 +131,8 @@ bootstrap_packages:
 ```
 
 
-**bootstrap_packages_remove**: A list with packages that will be removed by default. The defaults can be found in `defaults/main.yml`:
+**bootstrap_packages_remove**: A list with packages that will be removed by
+default. The defaults can be found in `defaults/main.yml`:
 ```
 bootstrap_packages_remove:
 # packages for bare metal
