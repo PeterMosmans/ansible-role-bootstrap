@@ -18,7 +18,7 @@ LogLevel INFO
 LoginGraceTime 120
 PermitRootLogin {{ sshd_permitrootlogin }}
 StrictModes yes
-
+MaxAuthTries {{ sshd_maxauthtries }}
 PubkeyAuthentication {{ sshd_pubkeyauthentication }}
 #AuthorizedKeysFile     %h/.ssh/authorized_keys
 
