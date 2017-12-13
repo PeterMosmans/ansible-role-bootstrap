@@ -64,6 +64,8 @@ bootstrap_git_repositories:
    version: master
 ```
 
+Note that when this variable is set, the git package needs to be installed, or
+part of the **bootstrap_packages** list.
 
 **bootstrap_groups**: A list with user groups that will be added by default. The
 defaults can be found in `defaults/main.yml`:
@@ -126,6 +128,7 @@ boostrap_users:
 The defaults can be found in `defaults/main.yml`:
 ```
 bootstrap_packages:
+  - git
   - sudo
   - ufw
 ```
@@ -191,6 +194,9 @@ bootstrap_ufw_tcp_allow:
   - 80
   - 443
 ```
+
+Note that when this variable is set, the ufw package needs to be installed, or
+part of the **bootstrap_packages** list.
 
 
 **grub_settings**: A list of name / value pairs that will be applied to the GRUB config file. The defaults can be found in `defaults/main.yml`:

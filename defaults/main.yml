@@ -7,6 +7,7 @@ bootstrap_groups_remove:
 bootstrap_locale:
   - en_US.UTF-8
 bootstrap_packages:
+  - git
   - sudo
   - ufw
 bootstrap_packages_remove:
