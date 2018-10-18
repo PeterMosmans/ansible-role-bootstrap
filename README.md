@@ -90,7 +90,7 @@ available, the role will still continue.
 
 
 **bootstrap_users**: A nested lists with users to add, with their SSH key, and
-optional git repos to install (e.g. dotfiles), and installers to run (e.g.
+optional: encrypted password, git repos to install (e.g. dotfiles), and installers to run (e.g.
 setting up symlinks). Example:
 ```
 bootstrap_users:
@@ -99,6 +99,7 @@ bootstrap_users:
    groups:
      - git
      - sudo
+   password: "$6$Qpc015eEs$4Eav1QM.omXm8bD7DFOTNQx6L3SG47vDT8JuMfW15e5gNbgq/C6D/7ZRdH4qoGLi0AW/HBWjJ/pm1thSQPK.e0"
    shell: "/bin/bash"
    ssh_key: https://github.com/your-github-username.keys
    repos:
@@ -108,8 +109,9 @@ bootstrap_users:
    installers:
      - command: /home/apenut/.dotfiles/installer.sh
 ```
-If you don't want to add any repositories or installer scripts, You can also
-leave the `repos` and `installers` variables empty:
+If you don't want to add any password, repositories or installer scripts, You can also
+refrain from adding the `password` value, and leave the `repos` and `installers`
+variables empty. The rest of the variables are required per user though.
 ```
 boostrap_users:
  - name: apenut
@@ -178,7 +180,8 @@ bootstrap_pip_packages:
   - ansible
 ```
 
-Note that **pip** (e.g. `python-pip`) needs to be installed for this, so don't forget to add that to the **bootstrap_packages** list.
+Note that **pip** (e.g. `python-pip`) needs to be installed for this, so don't
+forget to add that to the **bootstrap_packages** list.
 
 **bootstrap_sudo_users**: A lists of users to grant passwordless access to sudo using the `/etc/sudoers` file. Example:
 ```

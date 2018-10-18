@@ -21,7 +21,7 @@
   apt:
     name={{ item }}
     update_cache=yes
-    install-recommends=no
+    install-recommends=yes
     state=present
   with_items: "{{ bootstrap_packages|default([]) }}"
 
@@ -57,9 +57,11 @@
   user:
     name={{ item.name }}
     comment="{{ item.comment }}"
-    shell={{ item.shell }}
+    shell="{{ item.shell|default('/bin/bash') }}"
+    password="{{ item.password|default([]) }}"
     groups={{ ",".join(item.groups) }}
     state=present
+    update_password=on_create
   with_items: "{{ bootstrap_users|default([]) }}"
   tags:
     - usermanagement
