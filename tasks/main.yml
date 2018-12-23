@@ -2,12 +2,11 @@
 # tasks file for bootstrap
 - name: Remove unwanted packages
   apt:
-    name={{ item }}
+    name="{{ bootstrap_packages_remove|default([]) }}"
     force=yes
     purge=yes
     autoremove=yes
     state=absent
-  with_items: "{{ bootstrap_packages_remove|default([]) }}"
 
 - name: Update packages
   apt:
@@ -19,11 +18,10 @@
 
 - name: Install common packages
   apt:
-    name={{ item }}
+    name="{{ bootstrap_packages|default([]) }}"
     update_cache=yes
     install-recommends=yes
     state=present
-  with_items: "{{ bootstrap_packages|default([]) }}"
 
 - name: Install common pip packages
   pip:
@@ -231,7 +229,7 @@
 
 - name: Reload grub config
   command: update-grub 2>/dev/null
-  when: grub_config | changed
+  when: grub_config is changed
   tags:
     - grub
 
