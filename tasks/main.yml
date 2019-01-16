@@ -29,6 +29,40 @@
     state=present
   with_items: "{{ bootstrap_pip_packages|default([]) }}"
 
+# Weirdly enough this sometimes necessitates a reboot
+- name: Set hostname
+  hostname: name="{{ hostname|default("bootstrapped") }}"
+  tags:
+    - hostname
+
+- name: Find out kernel version
+  shell: uname -r
+  register: kernel_running
+  changed_when: kernel_running.stdout == ""
+  tags:
+    - experimental
+
+- name: Check if the most recent kernel is running
+  shell: echo $(readlink -f /vmlinuz) | sed -e "s/\/boot\/vmlinuz-//"
+  register: kernel_booting
+  changed_when: kernel_booting.stdout == ""
+  tags:
+    - experimental
+
+- name: Check if github.com can be resolved
+  shell: getent hosts github.com
+  register: resolved
+  ignore_errors: yes
+  changed_when: resolved.rc != 0
+  tags:
+    - experimental
+
+- name: Reboot if required
+  reboot:
+  when: bootstrap_reboot_allowed and ((kernel_running.stdout != kernel_booting.stdout) or resolved.rc != 0)
+  tags:
+    - experimental
+
 - name: Set locale (needs locale package)
   locale_gen:
     name: "{{ bootstrap_locale|default('en_US.UTF-8') }}"
@@ -135,11 +169,6 @@
     - restart sshd
   tags:
     - ssh
-
-- name: Set hostname
-  hostname: name="{{ hostname|default("bootstrapped") }}"
-  tags:
-    - hostname
 
 - name: Check current timezone
   shell: cat /etc/timezone

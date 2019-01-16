@@ -89,6 +89,11 @@ that this needs the locale package to properly function. If the package isn't
 available, the role will still continue.
 
 
+**bootstrap_reboot_allowed**: Whether Ansible is allowed to perform a reboot, if
+the kernel version has changed, or when the network has become 'unresponsive'
+(for instance after a hostname change). The default is false.
+
+
 **bootstrap_users**: A nested lists with users to add, with their SSH key, and
 optional: encrypted password, git repos to install (e.g. dotfiles), and installers to run (e.g.
 setting up symlinks). Example:

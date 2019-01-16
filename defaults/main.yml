@@ -42,6 +42,7 @@ bootstrap_packages_remove:
   - wamerican
   - xkb-data
   - xz-utils
+bootstrap_reboot_allowed: false
 bootstrap_templates:
   - src: hosts.j2
     dest: /etc/hosts
