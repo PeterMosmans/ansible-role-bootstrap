@@ -25,9 +25,8 @@
 
 - name: Install common pip packages
   pip:
-    name={{ item }}
+    name="{{ bootstrap_pip_packages|default([]) }}"
     state=present
-  with_items: "{{ bootstrap_pip_packages|default([]) }}"
 
 # Weirdly enough this sometimes necessitates a reboot
 - name: Set hostname
