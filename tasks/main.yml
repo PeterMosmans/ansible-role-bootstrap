@@ -151,7 +151,10 @@
   with_items: "{{ bootstrap_ufw_tcp_allow|default([22]) }}"
 
 - name: Make sure firewall is up and running, and denying
-  ufw: state=enabled policy=deny
+  ufw:
+    state: enabled
+    policy: deny
+    direction: incoming
   notify:
     - reload ufw
   tags:
