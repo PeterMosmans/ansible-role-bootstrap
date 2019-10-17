@@ -2,31 +2,34 @@
 # tasks file for bootstrap
 - name: Remove unwanted packages
   apt:
-    name="{{ bootstrap_packages_remove|default([]) }}"
-    force=yes
-    purge=yes
-    autoremove=yes
-    state=absent
+    name: "{{ bootstrap_packages_remove|default([]) }}"
+    force: yes
+    purge: yes
+    autoremove: yes
+    state: absent
 
 - name: Update packages
   apt:
-    update_cache=yes
-    upgrade=dist
-    cache_valid_time=86400
+    update_cache: yes
+    upgrade: dist
+    cache_valid_time: 86400
   tags:
     - update
 
 - name: Install common packages
   apt:
-    name="{{ bootstrap_packages|default([]) }}"
-    update_cache=yes
-    install-recommends=yes
-    state=present
+    name: "{{ bootstrap_packages|default([]) }}"
+    update_cache: yes
+    install-recommends: yes
+    state: present
+  when: bootstrap_packages is defined
 
 - name: Install common pip packages
   pip:
-    name="{{ bootstrap_pip_packages|default([]) }}"
-    state=present
+    name: "{{ bootstrap_pip_packages|default([]) }}"
+    executable: "{{ bootstrap_pip_version|default('pip3') }}"
+    state: present
+  when: bootstrap_pip_packages is defined
 
 # Weirdly enough this sometimes necessitates a reboot
 - name: Set hostname
