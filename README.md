@@ -20,7 +20,6 @@ Role Variables
 Available variables are listed below, along with default values
 
 
-
 **bootstrap_commands**: A list with commands that will be executed on the host
 as last step of the bootstrap role. Example:
 ```
@@ -136,16 +135,16 @@ The defaults can be found in `defaults/main.yml`:
 ```
 bootstrap_packages:
   - git
+  - python3-pip
   - sudo
   - ufw
 ```
-
 
 **bootstrap_packages_remove**: A list with packages that will be removed by
 default. The defaults can be found in `defaults/main.yml`:
 ```
 bootstrap_packages_remove:
-# packages for bare metal
+  # packages not needed on bare metal
   - acpid
   - bluez
   - crda
@@ -159,13 +158,13 @@ bootstrap_packages_remove:
   - wireless-regdb
   - wireless-tools
   - wpasupplicant
-# non-server / graphical packages
+  # several superfluous packages
   - console-setup
   - cups
   - dictionaries-common
   - installation-report
-  - ispell
   - iso-codes
+  - ispell
   - krb5-locales
   - man-db
   - manpages
@@ -185,8 +184,11 @@ bootstrap_pip_packages:
   - ansible
 ```
 
-Note that **pip** (e.g. `python-pip`) needs to be installed for this, so don't
+Note that **pip** (e.g. `python3-pip`) needs to be installed for this, so don't
 forget to add that to the **bootstrap_packages** list.
+
+**bootstrap_pip_version**: The version of pip to be used. This defaults to pip3
+whennot specified but can be overridden.
 
 **bootstrap_sudo_users**: A lists of users to grant passwordless access to sudo using the `/etc/sudoers` file. Example:
 ```

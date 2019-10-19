@@ -4,14 +4,15 @@ bootstrap_groups:
   - sudo
 bootstrap_groups_remove:
   - bluetooth
-bootstrap_locale:
-  - en_US.UTF-8
+bootstrap_locale: "en_US.utf8"
 bootstrap_packages:
   - git
+  - python-pip
+  - python3-pip
   - sudo
   - ufw
 bootstrap_packages_remove:
-# packages for bare metal
+  # packages not needed on bare metal
   - acpid
   - bluez
   - crda
@@ -25,13 +26,13 @@ bootstrap_packages_remove:
   - wireless-regdb
   - wireless-tools
   - wpasupplicant
-# non-server / graphical packages
+  # several superfluous packages
   - console-setup
   - cups
   - dictionaries-common
   - installation-report
-  - ispell
   - iso-codes
+  - ispell
   - krb5-locales
   - man-db
   - manpages
