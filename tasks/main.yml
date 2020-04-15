@@ -31,6 +31,11 @@
     state: present
   when: bootstrap_pip_packages is defined
 
+- name: Install third-party packages
+  apt:
+    deb: "{{ item }}"
+  loop: "{{ bootstrap_url_packages }}"
+
 # Weirdly enough this sometimes necessitates a reboot
 - name: Set hostname
   hostname: name="{{ hostname|default("bootstrapped") }}"

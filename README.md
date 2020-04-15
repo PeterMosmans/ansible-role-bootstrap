@@ -209,6 +209,13 @@ Note that when this variable is set, the ufw package needs to be installed, or
 part of the **bootstrap_packages** list.
 
 
+**bootstrap_url_packages**: A list of URLs that will be installed as packages.
+Example:
+```
+bootstrap_url_packages:
+- https://github.com/sharkdp/bat/releases/download/v0.12.1/bat_0.12.1_amd64.deb
+```
+
 **grub_settings**: A list of name / value pairs that will be applied to the GRUB config file. The defaults can be found in `defaults/main.yml`:
 ```
 grub_settings:
