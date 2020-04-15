@@ -180,29 +180,8 @@
   tags:
     - ssh
 
-- name: Check current timezone
-  shell: cat /etc/timezone
-  register: current_zone
-  changed_when: current_zone.stdout != timezone
-  tags:
-    - timezone
-
-- name: Modify timezone variables
-  copy:
-    content={{ timezone }}
-    dest=/etc/timezone
-    owner=root
-    group=root
-    mode=0644
-  when: current_zone.stdout != timezone
-  notify:
-    - update timezone
-  tags:
-    - timezone
-
 - name: Allow passwordless sudo for sudo users
-  lineinfile:
-    "dest=/etc/sudoers
+  lineinfile: "dest=/etc/sudoers
     state=present
     regexp='^{{ item }}'
     insertafter=EOF
@@ -271,6 +250,8 @@
   when: grub_config is changed
   tags:
     - grub
+
+- include: timezone.yml
 
 - name: Run post-provision commands
   command: "{{ item }}"
