@@ -200,9 +200,9 @@ bootstrap_sudo_users:
 **bootstrap_ufw_tcp_allow**: A list of TCP ports that will be opened up in the firewall. It defaults to port 22 only. Example:
 ```
 bootstrap_ufw_tcp_allow:
-  - 22
-  - 80
-  - 443
+  - "22"
+  - "80"
+  - "443"
 ```
 
 Note that when this variable is set, the ufw package needs to be installed, or
