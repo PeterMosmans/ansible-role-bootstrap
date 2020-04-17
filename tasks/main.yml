@@ -44,16 +44,16 @@
     - hostname
 
 - name: Find out kernel version
-  shell: uname -r
+  command: uname -r
   register: kernel_running
-  changed_when: kernel_running.stdout == ""
+  changed_when: false
   tags:
     - experimental
 
 - name: Check if the most recent kernel is running
   shell: echo $(readlink -f /vmlinuz) | sed -e "s/\/boot\/vmlinuz-//"
   register: kernel_booting
-  changed_when: kernel_booting.stdout == ""
+  changed_when: false
   tags:
     - experimental
 
