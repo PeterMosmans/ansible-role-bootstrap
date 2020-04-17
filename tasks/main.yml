@@ -58,10 +58,10 @@
     - experimental
 
 - name: Check if github.com can be resolved
-  shell: getent hosts github.com
+  command: getent hosts github.com
   register: resolved
   ignore_errors: yes
-  changed_when: resolved.rc != 0
+  changed_when: resolved.rc
   tags:
     - experimental
 
@@ -79,30 +79,28 @@
 
 - name: Add standard groups
   group:
-    name={{ item }}
-    state=present
-  with_items: "{{ bootstrap_groups|default([]) }}"
+    name: "{{ item }}"
+    state: present
+  loop: "{{ bootstrap_groups|default([]) }}"
   tags:
     - usermanagement
 
 - name: Remove groups
-  group:
-    name={{ item }}
+  group: name={{ item }}
     state=absent
   with_items: "{{ bootstrap_groups_remove|default([]) }}"
   tags:
     - usermanagement
 
 - name: Add users
-  user:
-    name={{ item.name }}
+  user: name={{ item.name }}
     comment="{{ item.comment }}"
     shell="{{ item.shell|default('/bin/bash') }}"
     password="{{ item.password|default([]) }}"
     groups={{ ",".join(item.groups) }}
     state=present
     update_password=on_create
-  with_items: "{{ bootstrap_users|default([]) }}"
+  loop: "{{ bootstrap_users|default([]) }}"
   tags:
     - usermanagement
 
@@ -121,18 +119,17 @@
 
 - name: Create common (empty) files / directories
   file:
-    path={{ item.path }}
-    mode={{ item.mode }}
-    owner={{ item.owner|default("root") }}
-    group={{ item.group|default("root") }}
-    state={{ item.state|default("directory") }}
+    path: "{{ item.path }}"
+    mode: "{{ item.mode }}"
+    owner: '{{ item.owner|default("root") }}'
+    group: '{{ item.group|default("root") }}'
+    state: '{{ item.state|default("directory") }}'
   with_items: "{{ bootstrap_directories|default([]) }}"
   tags:
     - files
 
 - name: Copy common files
-  copy:
-    src={{ item.src }}
+  copy: src={{ item.src }}
     dest={{ item.dest }}
     mode={{ item.mode }}
     force={{ item.force|default("yes") }}
@@ -142,8 +139,7 @@
     - files
 
 - name: Apply / deploy common templates
-  template:
-    src={{ item.src }}
+  template: src={{ item.src }}
     dest={{ item.dest }}
     mode={{ item.mode }}
   with_items:
@@ -154,7 +150,7 @@
 - name: Allow ssh through firewall
   ufw: rule=allow proto=tcp port={{ item }}
   notify:
-    - reload ufw
+    - Reload ufw
   tags:
     - ssh
   with_items: '{{ bootstrap_ufw_tcp_allow|default(["22"]) }}'
@@ -165,19 +161,18 @@
     policy: deny
     direction: incoming
   notify:
-    - reload ufw
+    - Reload ufw
   tags:
     - ssh
 
 - name: Remove insufficient moduli settings
-  lineinfile:
-    dest=/etc/ssh/moduli
+  lineinfile: dest=/etc/ssh/moduli
     regexp=" {{ item }} "
     line="{{ item }}"
     state=absent
   with_items: "{{ sshd_moduli_remove|default([]) }}"
   notify:
-    - restart sshd
+    - Restart sshd
   tags:
     - ssh
 
@@ -192,16 +187,14 @@
     - usermanagement
 
 - name: Add public SSH keys per user
-  authorized_key:
-    user={{ item.name }}
+  authorized_key: user={{ item.name }}
     key="{{ item.ssh_key }}"
   with_items: "{{ bootstrap_users|default([]) }}"
   tags:
     - usermanagement
 
 - name: Install git repos per user
-  git:
-    repo={{ item[1].src }}
+  git: repo={{ item[1].src }}
     dest={{ item[1].dest }}
     depth=1
     accept_hostkey=yes
@@ -216,9 +209,9 @@
 
 - name: Set correct ownership for personal git repos
   file: name={{ item[1].dest }}
-        owner={{ item[0].name }}
-        group={{ item[0].name }}
-        recurse=yes
+    owner={{ item[0].name }}
+    group={{ item[0].name }}
+    recurse=yes
   with_subelements:
     - "{{ bootstrap_users|default([]) }}"
     - repos
@@ -236,26 +229,20 @@
     - usermanagement
 
 - name: Disable grub timeout
-  lineinfile:
-    dest=/etc/default/grub
+  lineinfile: dest=/etc/default/grub
     regexp="^{{ item.name }}="
     line="{{ item.name }}={{ item.value }}"
     state=present
   with_items: "{{ grub_settings|default([]) }}"
-  register: grub_config
-  tags:
-    - grub
-
-- name: Reload grub config
-  command: update-grub 2>/dev/null
-  when: grub_config is changed
+  notify: Reload grub config
   tags:
     - grub
 
 - include: timezone.yml
+  tags: timezone
 
 - name: Run post-provision commands
   command: "{{ item }}"
-  with_items: "{{ bootstrap_commands|default([]) }}"
+  loop: "{{ bootstrap_commands|default([]) }}"
   tags:
     - commands
