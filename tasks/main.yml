@@ -5,6 +5,7 @@
     name: "{{ bootstrap_packages_remove|default([]) }}"
     force: yes
     purge: yes
+    autoclean: yes
     autoremove: yes
     state: absent
 
@@ -107,12 +108,12 @@
 
 - name: Install common git repositories
   git:
-    repo={{ item.repo }}
-    dest={{ item.dest }}
-    depth={{ item.depth|default("1") }}
-    accept_hostkey=yes
-    version={{ item.version|default("master") }}
-    force={{ item.force|default("no") }}
+    repo: "{{ item.repo }}"
+    dest: "{{ item.dest }}"
+    depth: "{{ item.depth|default('1') }}"
+    accept_hostkey: yes
+    version: "{{ item.version|default('master') }}"
+    force: "{{ item.force|default('no') }}"
   with_items:
     - "{{ bootstrap_git_repositories|default([]) }}"
   # local modifications allowed
