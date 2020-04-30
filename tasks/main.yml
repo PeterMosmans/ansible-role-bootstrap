@@ -1,41 +1,7 @@
 ---
 # tasks file for bootstrap
-- name: Remove unwanted packages
-  apt:
-    name: "{{ bootstrap_packages_remove|default([]) }}"
-    force: yes
-    purge: yes
-    autoclean: yes
-    autoremove: yes
-    state: absent
-
-- name: Update packages
-  apt:
-    update_cache: yes
-    upgrade: dist
-    cache_valid_time: 86400
-  tags:
-    - update
-
-- name: Install common packages
-  apt:
-    name: "{{ bootstrap_packages|default([]) }}"
-    update_cache: yes
-    install-recommends: yes
-    state: present
-  when: bootstrap_packages is defined
-
-- name: Install common pip packages
-  pip:
-    name: "{{ bootstrap_pip_packages|default([]) }}"
-    executable: "{{ bootstrap_pip_version|default('pip3') }}"
-    state: present
-  when: bootstrap_pip_packages is defined
-
-- name: Install third-party packages
-  apt:
-    deb: "{{ item }}"
-  loop: "{{ bootstrap_url_packages }}"
+- include: packages.yml
+  tags: packages
 
 # Weirdly enough this sometimes necessitates a reboot
 - name: Set hostname
@@ -117,26 +83,8 @@
   # local modifications allowed
   ignore_errors: yes
 
-- name: Create common (empty) files / directories
-  file:
-    path: "{{ item.path }}"
-    mode: "{{ item.mode }}"
-    owner: '{{ item.owner|default("root") }}'
-    group: '{{ item.group|default("root") }}'
-    state: '{{ item.state|default("directory") }}'
-  with_items: "{{ bootstrap_directories|default([]) }}"
-  tags:
-    - files
-
-- name: Copy common files
-  copy: src={{ item.src }}
-    dest={{ item.dest }}
-    mode={{ item.mode }}
-    force={{ item.force|default("yes") }}
-  with_items:
-    - "{{ bootstrap_files|default([]) }}"
-  tags:
-    - files
+- include: files.yml
+  tags: files
 
 - name: Apply / deploy common templates
   template: src={{ item.src }}
@@ -240,6 +188,9 @@
 
 - include: timezone.yml
   tags: timezone
+
+- include: mounts.yml
+  tags: mounts
 
 - name: Run post-provision commands
   command: "{{ item }}"
