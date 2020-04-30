@@ -37,38 +37,14 @@
   tags:
     - experimental
 
+- include: users.yml
+  tags: users
+
 - name: Set locale (needs locale package)
   locale_gen:
     name: "{{ bootstrap_locale|default('en_US.UTF-8') }}"
     state: present
   ignore_errors: yes
-
-- name: Add standard groups
-  group:
-    name: "{{ item }}"
-    state: present
-  loop: "{{ bootstrap_groups|default([]) }}"
-  tags:
-    - usermanagement
-
-- name: Remove groups
-  group: name={{ item }}
-    state=absent
-  with_items: "{{ bootstrap_groups_remove|default([]) }}"
-  tags:
-    - usermanagement
-
-- name: Add users
-  user: name={{ item.name }}
-    comment="{{ item.comment }}"
-    shell="{{ item.shell|default('/bin/bash') }}"
-    password="{{ item.password|default([]) }}"
-    groups={{ ",".join(item.groups) }}
-    state=present
-    update_password=on_create
-  loop: "{{ bootstrap_users|default([]) }}"
-  tags:
-    - usermanagement
 
 - name: Install common git repositories
   git:
@@ -78,8 +54,9 @@
     accept_hostkey: yes
     version: "{{ item.version|default('master') }}"
     force: "{{ item.force|default('no') }}"
-  with_items:
-    - "{{ bootstrap_git_repositories|default([]) }}"
+  loop: "{{ bootstrap_git_repositories|default([]) }}"
+  loop_control:
+    label: "{{ item.repo }}"
   # local modifications allowed
   ignore_errors: yes
 
@@ -124,57 +101,6 @@
   tags:
     - ssh
 
-- name: Allow passwordless sudo for sudo users
-  lineinfile: "dest=/etc/sudoers
-    state=present
-    regexp='^{{ item }}'
-    insertafter=EOF
-    line='{{ item }} ALL=(ALL) NOPASSWD: ALL'"
-  with_items: "{{ bootstrap_sudo_users|default([]) }}"
-  tags:
-    - usermanagement
-
-- name: Add public SSH keys per user
-  authorized_key: user={{ item.name }}
-    key="{{ item.ssh_key }}"
-  with_items: "{{ bootstrap_users|default([]) }}"
-  tags:
-    - usermanagement
-
-- name: Install git repos per user
-  git: repo={{ item[1].src }}
-    dest={{ item[1].dest }}
-    depth=1
-    accept_hostkey=yes
-    version={{ item[1].version }}
-  become_user: "{{ item[0].name }}"
-  become: yes
-  with_subelements:
-    - "{{ bootstrap_users|default([]) }}"
-    - repos
-  tags:
-    - usermanagement
-
-- name: Set correct ownership for personal git repos
-  file: name={{ item[1].dest }}
-    owner={{ item[0].name }}
-    group={{ item[0].name }}
-    recurse=yes
-  with_subelements:
-    - "{{ bootstrap_users|default([]) }}"
-    - repos
-  tags:
-    - usermanagement
-
-- name: Execute installers for users
-  command: "{{ item[1].command }}"
-  become: yes
-  become_user: "{{ item[0].name }}"
-  with_subelements:
-    - "{{ bootstrap_users|default([]) }}"
-    - installers
-  tags:
-    - usermanagement
 
 - name: Disable grub timeout
   lineinfile: dest=/etc/default/grub
