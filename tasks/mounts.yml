@@ -1,0 +1,10 @@
+---
+- name: Set mounts
+  mount:
+    path: "{{ item.path }}"
+    src: "{{ item.src }}"
+    fstype: "{{ item.fstype }}"
+    opts: "{{ item.opts }}"
+    state: present
+  loop: "{{ bootstrap_mounts | default([]) }}"
+

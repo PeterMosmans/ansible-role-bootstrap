@@ -17,8 +17,16 @@ None.
 Role Variables
 --------------
 
-Available variables are listed below, along with default values
+Available variables are listed below alphabetically, along with default values.
 
+**bootstrap_alternatives**: A list with alternatives, to manage symbolic links
+using the ``update-alternatives`` tool. Example:
+```
+bootstrap_alternatives:
+  - link: /usr/bin/pip
+    name: pip
+    path: /usr/bin/pip3
+```
 
 **bootstrap_commands**: A list with commands that will be executed on the host
 as last step of the bootstrap role. Example:
@@ -52,7 +60,7 @@ bootstrap_files:
   dest: /tmp/my-file.py
    mode: "0755"
 ```
-
+This will be provisioned when the `files` tags is being used.
 
 **bootstrap_git_repositories**: A list with common git repositories that will be
 cloned. Example:
@@ -87,6 +95,17 @@ default to en_US.UTF-8. Example: ``` bootstrap_locale: "en_US.UTF-8" ``` Note
 that this needs the locale package to properly function. If the package isn't
 available, the role will still continue.
 
+**bootstrap_mounts**: A list of mounts that will be added to the mount file
+(`/etc/fstab`). Example:
+```
+bootstrap_mounts:
+  - path: /home/peter/demos
+    src: demos
+    fstype: vboxsf
+    opts: auto,rw,uid=1000,gid=1000
+    state: present
+```
+This will be provisioned when the `mounts` tags is being used.
 
 **bootstrap_reboot_allowed**: Whether Ansible is allowed to perform a reboot, if
 the kernel version has changed, or when the network has become 'unresponsive'

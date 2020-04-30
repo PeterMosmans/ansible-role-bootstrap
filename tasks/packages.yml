@@ -1,0 +1,41 @@
+---
+- name: Remove unwanted packages
+  apt:
+    name: "{{ bootstrap_packages_remove|default([]) }}"
+    force: yes
+    autoclean: yes
+    autoremove: yes
+    state: absent
+
+- name: Update packages
+  apt:
+    update_cache: yes
+    upgrade: dist
+    cache_valid_time: 86400
+  tags:
+    - update
+
+- name: Install common packages
+  apt:
+    name: "{{ bootstrap_packages|default([]) }}"
+    update_cache: yes
+    install-recommends: yes
+    state: present
+
+- name: Install common pip packages
+  pip:
+    name: "{{ bootstrap_pip_packages|default([]) }}"
+    executable: "{{ bootstrap_pip_version|default('pip3') }}"
+    state: present
+
+- name: Install third-party packages
+  apt:
+    deb: "{{ item }}"
+  loop: "{{ bootstrap_url_packages|default([]) }}"
+
+- name: Update alternatives
+  alternatives:
+    link: "{{ item.link }}"
+    name: "{{ item.name }}"
+    path: "{{ item.path }}"
+  loop: "{{ bootstrap_alternatives|default([]) }}"
