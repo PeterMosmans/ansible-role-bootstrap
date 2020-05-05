@@ -17,7 +17,9 @@
     - experimental
 
 - name: Check if the most recent kernel is running
-  shell: echo $(readlink -f /vmlinuz) | sed -e "s/\/boot\/vmlinuz-//"
+  shell: |
+    set -o pipefail
+    echo $(readlink -f /vmlinuz) | sed -e "s/\/boot\/vmlinuz-//"
   register: kernel_booting
   changed_when: false
   tags:
