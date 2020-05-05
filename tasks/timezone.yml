@@ -1,16 +1,4 @@
 ---
-- name: Check current timezone
-  set_fact:
-    current_zone: "{{ lookup('file', '/etc/timezone') }}"
-  changed_when: current_zone != timezone
-
-- name: Modify timezone variables
-  copy:
-    content: "{{ timezone }}"
-    dest: /etc/timezone
-    owner: root
-    group: root
-    mode: 0644
-  when: current_zone != timezone
-  notify:
-    - Update timezone
+- name: Set correct timezone
+  timezone:
+    name: "{{ timezone }}"
