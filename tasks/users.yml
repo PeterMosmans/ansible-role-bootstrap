@@ -16,10 +16,14 @@
     name: "{{ item.name }}"
     comment: "{{ item.comment }}"
     shell: "{{ item.shell|default('/bin/bash') }}"
-    password: "{{ item.password|default([]) }}"
-    groups: "{{ ','.join(item.groups) }}"
+    password: "{{ item.password|default('') }}"
+    groups: "{{ ','.join(item.groups|default([])) }}"
     state: present
     update_password: on_create
+    create_home: "{{ item.create_home|default('yes') }}"
+    generate_ssh_key: "{{ item.generate_ssh_key|default('no') }}"
+    ssh_key_bits: "4096"
+    ssh_key_comment: "{{ item.ssh_key_comment|default('') }}"
   loop: "{{ bootstrap_users|default([]) }}"
   loop_control:
     label: "{{ item.name }}"
@@ -39,6 +43,7 @@
   loop: "{{ bootstrap_users|default([]) }}"
   loop_control:
     label: "{{ item.name }}"
+  when: item.ssh_key is defined
 
 - name: Install git repos per user
   git:
