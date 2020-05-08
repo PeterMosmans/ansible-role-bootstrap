@@ -54,7 +54,7 @@
     version: "{{ item[1].version }}"
   become_user: "{{ item[0].name }}"
   become: yes
-  loop: "{{ bootstrap_users|default([])|subelements('repos') }}"
+  loop: "{{ lookup('subelements', bootstrap_users, 'repos', {'skip_missing': True}, wantlist=True) }}"
   loop_control:
     label: "{{ item[1].src }}"
 
@@ -64,7 +64,7 @@
     owner: "{{ item[0].name }}"
     group: "{{ item[0].name }}"
     recurse: yes
-  loop: "{{ bootstrap_users|default([])|subelements('repos') }}"
+  loop: "{{ lookup('subelements', bootstrap_users, 'repos', {'skip_missing': True}, wantlist=True) }}"
   loop_control:
     label: "{{ item[1].dest }}"
 
@@ -72,6 +72,6 @@
   command: "{{ item[1].command }}"
   become: yes
   become_user: "{{ item[0].name }}"
-  loop: "{{ bootstrap_users|default([])|subelements('installers') }}"
+  loop: "{{ lookup('subelements', bootstrap_users, 'installers', {'skip_missing': True}, wantlist=True) }}"
   loop_control:
     label: "{{ item[1].command }}"
