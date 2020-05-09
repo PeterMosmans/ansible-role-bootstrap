@@ -15,13 +15,14 @@
   user:
     name: "{{ item.name }}"
     comment: "{{ item.comment }}"
-    shell: "{{ item.shell|default('/bin/bash') }}"
-    password: "{{ item.password|default('') }}"
+    shell: "{{ item.shell|default(omit) }}"
+    password: "{{ item.password|default(omit) }}"
     groups: "{{ ','.join(item.groups|default([])) }}"
     state: present
     update_password: on_create
-    create_home: "{{ item.create_home|default('yes') }}"
-    generate_ssh_key: "{{ item.generate_ssh_key|default('no') }}"
+    create_home: "{{ item.create_home|default(omit) }}"
+    home: "{{ item.home|default(omit) }}"
+    generate_ssh_key: "{{ item.generate_ssh_key|default(omit) }}"
     ssh_key_bits: "4096"
     ssh_key_comment: "{{ item.ssh_key_comment|default('') }}"
   loop: "{{ bootstrap_users|default([]) }}"
