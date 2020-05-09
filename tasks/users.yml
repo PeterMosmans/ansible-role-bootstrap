@@ -22,6 +22,7 @@
     update_password: on_create
     create_home: "{{ item.create_home|default(omit) }}"
     home: "{{ item.home|default(omit) }}"
+    system: "{{ item.system|default(omit) }}"
     generate_ssh_key: "{{ item.generate_ssh_key|default(omit) }}"
     ssh_key_bits: "4096"
     ssh_key_comment: "{{ item.ssh_key_comment|default('') }}"
