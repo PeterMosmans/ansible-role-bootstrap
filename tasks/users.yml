@@ -1,8 +1,9 @@
 ---
 - name: Add standard groups
   group:
-    name: "{{ item }}"
+    name: "{{ item.name }}"
     state: present
+    system: "{{ item.system|default(omit) }}"
   loop: "{{ bootstrap_groups|default([]) }}"
 
 - name: Remove groups

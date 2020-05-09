@@ -74,11 +74,13 @@ bootstrap_git_repositories:
 Note that when this variable is set, the git package needs to be installed, or
 part of the **bootstrap_packages** list.
 
-**bootstrap_groups**: A list with user groups that will be added by default. The
-defaults can be found in `defaults/main.yml`:
+**bootstrap_groups**: A list with user groups that will be added by default.
+Optionally the system parameter can be set, to denote whether it's a system
+group or not. The defaults can be found in `defaults/main.yml`:
 ```
 bootstrap_groups:
-  - sudo
+  - name: sudo
+    system: yes
 ```
 
 

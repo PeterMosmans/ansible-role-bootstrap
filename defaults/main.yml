@@ -1,7 +1,8 @@
 ---
 # defaults file for bootstrap
 bootstrap_groups:
-  - sudo
+  - name: sudo
+    system: yes
 bootstrap_groups_remove:
   - bluetooth
 bootstrap_locale: "en_US.utf8"
