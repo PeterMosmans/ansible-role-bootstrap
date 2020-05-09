@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/PeterMosmans/ansible-role-bootstrap/compare/v1.6.0...v2.0.0) (2020-05-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* This is incompatible with the previous bootstrap_groups list,
+as this now expects a name key, and an optional system key.
+
+Previous situation:
+
+bootstrap_groups:
+  - docker
+  - mygroup
+
+New situation:
+
+bootstrap_groups:
+  - name: docker
+    system: yes
+  - name: mygroup
+
+### Features
+
+* add ability to create system accounts ([19b90b6](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/19b90b64b00e229e7695b4a13ac1ebff633be227))
+* enable groups to be system groups ([5861c2a](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/5861c2a2d04552f69a1b610b10699528754a119a))
+* use Ansible defaults when certain parameters aren't set ([fec6328](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/fec632875a6eb8caf6c0a99103b7711c678a076b))
+
 ## [1.6.0](https://github.com/PeterMosmans/ansible-role-bootstrap/compare/v1.5.0...v1.6.0) (2020-05-09)
 
 
