@@ -7,4 +7,6 @@
     opts: "{{ item.opts }}"
     state: present
   loop: "{{ bootstrap_mounts | default([]) }}"
+  loop_control:
+    label: "{{ item.path }}"
 
