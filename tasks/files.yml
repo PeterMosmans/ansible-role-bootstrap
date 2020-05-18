@@ -3,10 +3,12 @@
   file:
     path: "{{ item.path }}"
     mode: "{{ item.mode }}"
-    owner: '{{ item.owner|default("root") }}'
-    group: '{{ item.group|default("root") }}'
-    state: '{{ item.state|default("directory") }}'
+    owner: '{{ item.owner|default(omit) }}'
+    group: '{{ item.group|default(omit) }}'
+    state: '{{ item.state|default(omit) }}'
   loop: "{{ bootstrap_directories|default([]) }}"
+  loop_control:
+    label: "{{ item.path }}"
 
 - name: Copy common files
   copy:
