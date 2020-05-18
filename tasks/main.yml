@@ -63,15 +63,6 @@
 - include: files.yml
   tags: files
 
-- name: Apply / deploy common templates
-  template: src={{ item.src }}
-    dest={{ item.dest }}
-    mode={{ item.mode }}
-  with_items:
-    - "{{ bootstrap_templates|default([]) }}"
-  tags:
-    - templates
-
 - name: Allow ssh through firewall
   ufw: rule=allow proto=tcp port={{ item }}
   notify:

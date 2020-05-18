@@ -13,5 +13,18 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: "{{ item.mode }}"
-    force: '{{ item.force|default("yes") }}'
+    force: '{{ item.force|default(omit) }}'
   loop: "{{ bootstrap_files|default([]) }}"
+  loop_control:
+    label: "{{ item.dest }}"
+
+- name: Apply / deploy common templates
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode|default(omit) }}"
+  loop: "{{ bootstrap_templates|default([]) }}"
+  loop_control:
+    label: "{{ item.dest }}"
+  tags:
+    - templates
