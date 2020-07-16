@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/PeterMosmans/ansible-role-bootstrap/compare/v2.0.0...v2.1.0) (2020-07-16)
+
+
+### Features
+
+* show nice labels during loops ([39feefd](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/39feefd9105ad97baac0071131d286a56e89c683))
+* support supplying a gid for new groups ([cf2a079](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/cf2a0792568ca4b0f80b3492511f0df01c3c843c))
+* support supplying SSH key size for new users ([b015cfa](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/b015cfa28505ea33de89b44604a7df531d8f2a29))
+* use Ansible defaults instead of hardcoded values ([67e0ad5](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/67e0ad5009506da400f5c717bf72e06e466f136f))
+
 ## [2.0.0](https://github.com/PeterMosmans/ansible-role-bootstrap/compare/v1.6.0...v2.0.0) (2020-05-09)
 
 
