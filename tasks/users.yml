@@ -3,6 +3,7 @@
   group:
     name: "{{ item.name }}"
     state: present
+    gid: "{{ item.gid|default(omit) }}"
     system: "{{ item.system|default(omit) }}"
   loop: "{{ bootstrap_groups|default([]) }}"
 
