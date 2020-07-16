@@ -26,7 +26,7 @@
     home: "{{ item.home|default(omit) }}"
     system: "{{ item.system|default(omit) }}"
     generate_ssh_key: "{{ item.generate_ssh_key|default(omit) }}"
-    ssh_key_bits: "4096"
+    ssh_key_bits: "{{ item.ssh_key_bits|default(4096) }}"
     ssh_key_comment: "{{ item.ssh_key_comment|default('') }}"
   loop: "{{ bootstrap_users|default([]) }}"
   loop_control:
