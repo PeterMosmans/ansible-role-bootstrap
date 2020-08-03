@@ -55,7 +55,7 @@
     dest: "{{ item[1].dest }}"
     depth: 1
     accept_hostkey: yes
-    version: "{{ item[1].version }}"
+    version: "{{ item[1].version|default(omit) }}"
   become_user: "{{ item[0].name }}"
   become: yes
   loop: "{{ lookup('subelements', bootstrap_users, 'repos', {'skip_missing': True}, wantlist=True) }}"
