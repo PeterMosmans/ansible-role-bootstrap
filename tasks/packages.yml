@@ -27,6 +27,8 @@
     name: "{{ bootstrap_pip_packages|default([]) }}"
     executable: "{{ bootstrap_pip_version|default('pip3') }}"
     state: present
+  when:
+    - bootstrap_pip_packages|length
 
 - name: Install third-party packages
   apt:
