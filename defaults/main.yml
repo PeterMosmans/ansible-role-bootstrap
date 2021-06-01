@@ -58,6 +58,8 @@ bootstrap_templates:
   - src: sshd_config.j2
     dest: /etc/ssh/sshd_config
     mode: "0644"
+bootstrap_ufw_tcp_allow:
+  - 22
 company: "Go Forward"
 grub_settings:
   - name: "GRUB_TIMEOUT"

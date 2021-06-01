@@ -64,12 +64,16 @@
   tags: files
 
 - name: Allow ssh through firewall
-  ufw: rule=allow proto=tcp port={{ item }}
+  ufw:
+    rule: allow
+    proto: tcp
+    port: "{{ item }}"
   notify:
     - Reload ufw
   tags:
     - ssh
-  with_items: '{{ bootstrap_ufw_tcp_allow|default(["22"]) }}'
+  with_items: "{{ bootstrap_ufw_tcp_allow }}"
+  when: bootstrap_ufw_tcp_allow|length
 
 - name: Make sure firewall is up and running, and denying
   ufw:
@@ -80,6 +84,7 @@
     - Reload ufw
   tags:
     - ssh
+  when: bootstrap_ufw_tcp_allow|length
 
 - name: Remove insufficient moduli settings
   lineinfile: dest=/etc/ssh/moduli
@@ -91,7 +96,6 @@
     - Restart sshd
   tags:
     - ssh
-
 
 - name: Disable grub timeout
   lineinfile: dest=/etc/default/grub
