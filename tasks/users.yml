@@ -44,6 +44,7 @@
   authorized_key:
     user: "{{ item.name }}"
     key: "{{ item.ssh_key }}"
+    validate_certs: "{{ item.validate_certs|default(omit) }}"
   loop: "{{ bootstrap_users|default([]) }}"
   loop_control:
     label: "{{ item.name }}"
