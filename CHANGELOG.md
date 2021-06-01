@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/PeterMosmans/ansible-role-bootstrap/compare/v2.1.0...v2.2.0) (2021-06-01)
+
+
+### Features
+
+* allow selective disabling of certificate validation ([6b8b0bc](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/6b8b0bca6e8fb704c33aa1ce6c8016cb4e50f8c3))
+* move ufw firewall defaults to defaults file ([388e400](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/388e40048198f429c31a9334a2429dc5b33cf9a5))
+* only set version for git repository when specified ([540647c](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/540647ccc29474a0008c264feb0e0881d0b2c9b4))
+
+
+### Bug Fixes
+
+* only install Python packages when necessary ([ee07f9a](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/ee07f9a3e5253a4962ad5d7779307bd09a0b2f63))
+
 ## [2.1.0](https://github.com/PeterMosmans/ansible-role-bootstrap/compare/v2.0.0...v2.1.0) (2020-07-16)
 
 
