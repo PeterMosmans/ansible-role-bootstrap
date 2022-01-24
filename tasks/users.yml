@@ -6,12 +6,14 @@
     gid: "{{ item.gid|default(omit) }}"
     system: "{{ item.system|default(omit) }}"
   loop: "{{ bootstrap_groups|default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
 
 - name: Remove groups
   group:
     name: "{{ item }}"
     state: absent
-  with_items: "{{ bootstrap_groups_remove|default([]) }}"
+  loop: "{{ bootstrap_groups_remove|default([]) }}"
 
 - name: Add users
   user:
