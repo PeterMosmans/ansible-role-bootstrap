@@ -8,7 +8,6 @@ bootstrap_groups_remove:
 bootstrap_locale: "en_US.utf8"
 bootstrap_packages:
   - git
-  - python-pip
   - python3-pip
   - sudo
   - ufw
