@@ -33,12 +33,14 @@
     label: "{{ item.name }}"
 
 - name: Allow passwordless sudo for sudo users
-  lineinfile: "dest=/etc/sudoers
-    state=present
-    regexp='^{{ item }}'
-    insertafter=EOF
-    line='{{ item }} ALL=(ALL) NOPASSWD: ALL'"
-  loop: "{{ bootstrap_sudo_users|default([]) }}"
+  template:
+    src: sudo.j2
+    dest:  "/etc/sudoers.d/{{ item.name }}"
+    mode: "0440"
+  loop: "{{ bootstrap_users|default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: item.groups is defined and 'sudo' in item.groups
 
 - name: Add public SSH keys per user
   authorized_key:

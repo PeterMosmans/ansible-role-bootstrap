@@ -211,12 +211,6 @@ forget to add that to the **bootstrap_packages** list.
 **bootstrap_pip_version**: The version of pip to be used. This defaults to pip3
 whennot specified but can be overridden.
 
-**bootstrap_sudo_users**: A lists of users to grant passwordless access to sudo using the `/etc/sudoers` file. Example:
-```
-bootstrap_sudo_users:
-  - vagrant
-```
-
 
 **bootstrap_ufw_tcp_allow**: A list of TCP ports that will be opened up in the firewall. It defaults to port 22 only. Example:
 ```
