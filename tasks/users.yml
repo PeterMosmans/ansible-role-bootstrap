@@ -81,6 +81,8 @@
   command: "{{ item[1].command }}"
   become: yes
   become_user: "{{ item[0].name }}"
+  register: result
   loop: "{{ lookup('subelements', bootstrap_users, 'installers', {'skip_missing': True}, wantlist=True) }}"
   loop_control:
     label: "{{ item[1].command }}"
+  changed_when: result.rc != 0
