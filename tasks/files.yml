@@ -1,8 +1,8 @@
 ---
 - name: Create common (empty) files / directories
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
-    mode: "{{ item.mode }}"
+    mode: "{{ item.mode|default(omit)}}"
     owner: '{{ item.owner|default(omit) }}'
     group: '{{ item.group|default(omit) }}'
     state: '{{ item.state|default(omit) }}'
@@ -11,17 +11,17 @@
     label: "{{ item.path }}"
 
 - name: Copy common files
-  copy:
+  ansible.builtin.copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    mode: "{{ item.mode }}"
+    mode: "{{ item.mode|default(omit)}}"
     force: '{{ item.force|default(omit) }}'
   loop: "{{ bootstrap_files|default([]) }}"
   loop_control:
     label: "{{ item.dest }}"
 
 - name: Apply / deploy common templates
-  template:
+  ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: "{{ item.mode|default(omit) }}"
