@@ -1,6 +1,6 @@
 ---
 # tasks file for bootstrap
-- include: packages.yml
+- include_tasks: packages.yml
   tags: packages
 
 # Weirdly enough this sometimes necessitates a reboot
@@ -37,7 +37,7 @@
   tags:
     - experimental
 
-- include: users.yml
+- include_tasks: users.yml
   tags: users
 
 - name: Set locale (needs locale package)
@@ -60,7 +60,7 @@
   # local modifications allowed
   ignore_errors: yes
 
-- include: files.yml
+- include_tasks: files.yml
   tags: files
 
 - name: Allow ssh through firewall
@@ -107,10 +107,10 @@
   tags:
     - grub
 
-- include: timezone.yml
+- include_tasks: timezone.yml
   tags: timezone
 
-- include: mounts.yml
+- include_tasks: mounts.yml
   tags: mounts
 
 - name: Run post-provision commands
