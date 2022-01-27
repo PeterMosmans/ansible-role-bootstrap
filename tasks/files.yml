@@ -2,10 +2,10 @@
 - name: Create common (empty) files / directories
   ansible.builtin.file:
     path: "{{ item.path }}"
-    mode: "{{ item.mode|default(omit)}}"
-    owner: '{{ item.owner|default(omit) }}'
-    group: '{{ item.group|default(omit) }}'
-    state: '{{ item.state|default(omit) }}'
+    mode: "{{ item.mode|default(omit) }}"
+    owner: "{{ item.owner|default(omit) }}"
+    group: "{{ item.group|default(omit) }}"
+    state: "{{ item.state|default(omit) }}"
   loop: "{{ bootstrap_directories|default([]) }}"
   loop_control:
     label: "{{ item.path }}"
@@ -14,8 +14,8 @@
   ansible.builtin.copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    mode: "{{ item.mode|default(omit)}}"
-    force: '{{ item.force|default(omit) }}'
+    mode: "{{ item.mode|default(omit) }}"
+    force: "{{ item.force|default(omit) }}"
   loop: "{{ bootstrap_files|default([]) }}"
   loop_control:
     label: "{{ item.dest }}"
