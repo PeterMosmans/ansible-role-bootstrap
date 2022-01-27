@@ -241,13 +241,6 @@ grub_settings:
 ```
 
 
-**hostname**: The hostname for the machine. If none is given, it will default to "bootstrapped". Example:
-```
-hostname: bootstrapped
-```
-
-
-
 **sshd_moduli_remove**: A list of moduli values that will be removed from the /etc/ssh/moduli list. The defaults can be found in `defaults/main.yml`:
 ```
 sshd_moduli_remove:

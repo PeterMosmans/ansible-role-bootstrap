@@ -5,12 +5,13 @@
 
 # Weirdly enough this sometimes necessitates a reboot
 - name: Set hostname
-  hostname: name="{{ hostname|default("bootstrapped") }}"
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
   tags:
     - hostname
 
 - name: Find out kernel version
-  command: uname -r
+  ansible.builtin.command: uname -r
   register: kernel_running
   changed_when: false
   tags:
