@@ -18,7 +18,11 @@
     - experimental
 
 - name: Check if the most recent kernel is running
-  shell: echo $(readlink -f /vmlinuz) | sed -e "s/\/boot\/vmlinuz-//"
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      echo $(readlink -f /vmlinuz) | sed -e "s/\/boot\/vmlinuz-//"
+    executable: /bin/bash
   register: kernel_booting
   changed_when: false
   tags:
@@ -59,7 +63,7 @@
   loop_control:
     label: "{{ item.repo }}"
   # local modifications allowed
-  ignore_errors: yes
+  failed_when: false
 
 - include_tasks: files.yml
   tags: files
@@ -117,5 +121,6 @@
 - name: Run post-provision commands
   command: "{{ item }}"
   loop: "{{ bootstrap_commands|default([]) }}"
+  changed_when: false
   tags:
     - commands
