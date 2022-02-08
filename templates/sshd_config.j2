@@ -1,5 +1,7 @@
 #  {{ ansible_managed }}
 
+Include /etc/ssh/sshd_config.d/*.conf
+
 # What ports, IPs and protocols we listen for
 Port 22
 # Use these options to restrict which interfaces/protocols sshd will bind to
@@ -41,9 +43,9 @@ PasswordAuthentication {{ sshd_passwordauthentication }}
 
 # Kerberos options
 #KerberosAuthentication no
-#KerberosGetAFSToken no
 #KerberosOrLocalPasswd yes
 #KerberosTicketCleanup yes
+#KerberosGetAFSToken no
 
 # GSSAPI options
 GSSAPIAuthentication {{ sshd_gssapiauthentication }}
