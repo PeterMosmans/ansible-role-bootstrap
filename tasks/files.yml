@@ -16,6 +16,7 @@
     dest: "{{ item.dest }}"
     mode: "{{ item.mode|default(omit) }}"
     force: "{{ item.force|default(omit) }}"
+    group: "{{ item.group|default(omit) }}"
   loop: "{{ bootstrap_files|default([]) }}"
   loop_control:
     label: "{{ item.dest }}"
@@ -24,6 +25,7 @@
   ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
+    group: "{{ item.group|default(omit) }}"
     mode: "{{ item.mode|default(omit) }}"
   loop: "{{ bootstrap_templates|default([]) }}"
   loop_control:
