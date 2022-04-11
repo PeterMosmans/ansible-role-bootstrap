@@ -9,6 +9,8 @@
   loop: "{{ bootstrap_directories|default([]) }}"
   loop_control:
     label: "{{ item.path }}"
+  tags:
+    - files
 
 - name: Copy common files
   ansible.builtin.copy:
@@ -20,6 +22,8 @@
   loop: "{{ bootstrap_files|default([]) }}"
   loop_control:
     label: "{{ item.dest }}"
+  tags:
+    - files
 
 - name: Apply / deploy common templates
   ansible.builtin.template:
