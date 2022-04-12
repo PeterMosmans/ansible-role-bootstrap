@@ -1,6 +1,6 @@
 ---
 - name: Add standard groups
-  group:
+  ansible.builtin.group:
     name: "{{ item.name }}"
     state: present
     gid: "{{ item.gid|default(omit) }}"
@@ -10,13 +10,13 @@
     label: "{{ item.name }}"
 
 - name: Remove groups
-  group:
+  ansible.builtin.group:
     name: "{{ item }}"
     state: absent
   loop: "{{ bootstrap_groups_remove|default([]) }}"
 
 - name: Add users
-  user:
+  ansible.builtin.user:
     name: "{{ item.name }}"
     comment: "{{ item.comment }}"
     shell: "{{ item.shell|default(omit) }}"
@@ -35,9 +35,9 @@
     label: "{{ item.name }}"
 
 - name: Allow passwordless sudo for sudo users
-  template:
+  ansible.builtin.template:
     src: sudo.j2
-    dest:  "/etc/sudoers.d/{{ item.name }}"
+    dest: "/etc/sudoers.d/{{ item.name }}"
     mode: "0440"
   loop: "{{ bootstrap_users|default([]) }}"
   loop_control:
@@ -55,31 +55,31 @@
   when: item.ssh_key is defined
 
 - name: Install git repos per user
-  git:
+  ansible.builtin.git:
     repo: "{{ item[1].src }}"
     dest: "{{ item[1].dest }}"
     depth: 1
-    accept_hostkey: yes
+    accept_hostkey: true
     version: "{{ item[1].version|default(omit) }}"
   become_user: "{{ item[0].name }}"
-  become: yes
+  become: true
   loop: "{{ lookup('subelements', bootstrap_users, 'repos', {'skip_missing': True}, wantlist=True) }}"
   loop_control:
     label: "{{ item[1].src }}"
 
 - name: Set correct ownership for personal git repos
-  file:
+  ansible.builtin.file:
     name: "{{ item[1].dest }}"
     owner: "{{ item[0].name }}"
     group: "{{ item[0].name }}"
-    recurse: yes
+    recurse: true
   loop: "{{ lookup('subelements', bootstrap_users, 'repos', {'skip_missing': True}, wantlist=True) }}"
   loop_control:
     label: "{{ item[1].dest }}"
 
 - name: Execute installers for users
-  command: "{{ item[1].command }}"
-  become: yes
+  ansible.builtin.command: "{{ item[1].command }}"
+  become: true
   become_user: "{{ item[0].name }}"
   register: result
   loop: "{{ lookup('subelements', bootstrap_users, 'installers', {'skip_missing': True}, wantlist=True) }}"

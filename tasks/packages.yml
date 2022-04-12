@@ -1,29 +1,29 @@
 ---
 - name: Remove unwanted packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ bootstrap_packages_remove|default([]) }}"
-    force: yes
-    autoclean: yes
-    autoremove: yes
+    force: true
+    autoclean: true
+    autoremove: true
     state: absent
 
 - name: Update packages
-  apt:
-    update_cache: yes
+  ansible.builtin.apt:
+    update_cache: true
     upgrade: dist
     cache_valid_time: 86400
   tags:
     - update
 
 - name: Install common packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ bootstrap_packages|default([]) }}"
-    update_cache: yes
-    install-recommends: yes
+    update_cache: true
+    install-recommends: true
     state: present
 
 - name: Install common pip packages
-  pip:
+  ansible.builtin.pip:
     name: "{{ bootstrap_pip_packages|default([]) }}"
     executable: "{{ bootstrap_pip_version|default('pip3') }}"
     state: present
@@ -31,7 +31,7 @@
     - bootstrap_pip_packages|default([])|length
 
 - name: Install third-party packages
-  apt:
+  ansible.builtin.apt:
     deb: "{{ item }}"
   loop: "{{ bootstrap_url_packages|default([]) }}"
 

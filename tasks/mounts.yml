@@ -9,4 +9,3 @@
   loop: "{{ bootstrap_mounts | default([]) }}"
   loop_control:
     label: "{{ item.path }}"
-

@@ -29,15 +29,15 @@
     - experimental
 
 - name: Check if github.com can be resolved
-  command: getent hosts github.com
+  ansible.builtin.command: getent hosts github.com
   register: resolved
-  ignore_errors: yes
+  ignore_errors: true
   changed_when: resolved.rc
   tags:
     - experimental
 
 - name: Reboot if required
-  reboot:
+  ansible.builtin.reboot:
   when: bootstrap_reboot_allowed and ((kernel_running.stdout != kernel_booting.stdout) or resolved.rc != 0)
   tags:
     - experimental
@@ -46,17 +46,17 @@
   tags: users
 
 - name: Set locale (needs locale package)
-  locale_gen:
+  locale_gen: # noqa syntax-check
     name: "{{ bootstrap_locale|default('en_US.UTF-8') }}"
     state: present
-  ignore_errors: yes
+  ignore_errors: true # noqa ignore-errors
 
 - name: Install common git repositories
-  git:
+  ansible.builtin.git:
     repo: "{{ item.repo }}"
     dest: "{{ item.dest }}"
     depth: "{{ item.depth|default('1') }}"
-    accept_hostkey: yes
+    accept_hostkey: true
     version: "{{ item.version|default('master') }}"
     force: "{{ item.force|default('no') }}"
   loop: "{{ bootstrap_git_repositories|default([]) }}"
@@ -91,7 +91,7 @@
   when: bootstrap_ufw_tcp_allow|length
 
 - name: Remove insufficient moduli settings
-  lineinfile: dest=/etc/ssh/moduli
+  ansible.builtin.lineinfile: dest=/etc/ssh/moduli
     regexp=" {{ item }} "
     line="{{ item }}"
     state=absent
@@ -102,7 +102,7 @@
     - ssh
 
 - name: Disable grub timeout
-  lineinfile: dest=/etc/default/grub
+  ansible.builtin.lineinfile: dest=/etc/default/grub
     regexp="^{{ item.name }}="
     line="{{ item.name }}={{ item.value }}"
     state=present
@@ -118,7 +118,7 @@
   tags: mounts
 
 - name: Run post-provision commands
-  command: "{{ item }}"
+  ansible.builtin.command: "{{ item }}"
   loop: "{{ bootstrap_commands|default([]) }}"
   changed_when: false
   tags:
