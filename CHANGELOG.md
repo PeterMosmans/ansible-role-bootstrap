@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.4.0](https://github.com/PeterMosmans/ansible-role-bootstrap/compare/2.3.0...2.4.0) (2022-04-12)
+
+### Features
+
+- add files tags to provision files
+  ([3be8151](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/3be815179fe9c54eebc73e79f5d3b77007eec48f))
+- ensure proper line endings
+  ([93fe434](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/93fe434ecfdcea77daf536c3bda639901bc96ab1))
+- rename locale setting
+  ([7bbe205](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/7bbe205d410001388e41040add372a673987d7e8))
+- support group parameter for files and templates
+  ([7f068a9](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/7f068a9897db6a2b30c8b1170848d93cd32996b6))
+- update hostsfile with more sane defaults
+  ([bdb0de5](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/bdb0de5ca5548966261a2ff79980c6ee5101fa37))
+
+### Bug Fixes
+
+- import tasks to ensure tags can be used
+  ([6f3ba5d](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/6f3ba5d064dd52c724551a05dbdf2d4ff999246f))
+- use FQDN everywhere, and true / false for truthy values
+  ([cfdac61](https://github.com/PeterMosmans/ansible-role-bootstrap/commit/cfdac6108534ccad137445db086b654016f68147))
+
 ## [2.3.0](https://github.com/PeterMosmans/ansible-role-bootstrap/compare/v2.2.0...v2.3.0) (2022-01-27)
 
 ### Features
